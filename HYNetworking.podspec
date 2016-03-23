@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.1'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.public_header_files = 'Pod/Classes/**/*.h'
+  s.source_files = 'Pod/Classes/*.{h,m}'
   s.dependency 'AFNetworking', '~> 3.0.4'
 end
