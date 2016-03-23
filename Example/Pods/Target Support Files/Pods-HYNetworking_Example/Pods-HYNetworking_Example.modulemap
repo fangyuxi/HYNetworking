@@ -1,6 +1,0 @@
-framework module Pods_HYNetworking_Example {
-  umbrella header "Pods-HYNetworking_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}

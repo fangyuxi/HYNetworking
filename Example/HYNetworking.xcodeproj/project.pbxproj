@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1FD0743E24F860A8DE78E5E4 /* Pods_HYNetworking_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FC9733DDE32986A4AAC284 /* Pods_HYNetworking_Example.framework */; };
+		0C73A188050C688F2A595E25 /* libPods-HYNetworking_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE0AB513FAEF8B8184E6693 /* libPods-HYNetworking_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -56,8 +56,8 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		659EAE04432D1DC142003B36 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		6AE0AB513FAEF8B8184E6693 /* libPods-HYNetworking_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HYNetworking_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		92FC9733DDE32986A4AAC284 /* Pods_HYNetworking_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HYNetworking_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5C7E0B6FF9DAA1A0D8CD962 /* Pods-HYNetworking_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HYNetworking_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HYNetworking_Example/Pods-HYNetworking_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D4186D8037D93F8BC12509BB /* HYNetworking.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = HYNetworking.podspec; path = ../HYNetworking.podspec; sourceTree = "<group>"; };
 		DFD2C14C5E3A8710FD911CF6 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				1FD0743E24F860A8DE78E5E4 /* Pods_HYNetworking_Example.framework in Frameworks */,
+				0C73A188050C688F2A595E25 /* libPods-HYNetworking_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +116,7 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				92FC9733DDE32986A4AAC284 /* Pods_HYNetworking_Example.framework */,
+				6AE0AB513FAEF8B8184E6693 /* libPods-HYNetworking_Example.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -460,9 +460,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HYNetworking/HYNetworking-Prefix.pch";
 				INFOPLIST_FILE = "HYNetworking/HYNetworking-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -476,9 +479,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HYNetworking/HYNetworking-Prefix.pch";
 				INFOPLIST_FILE = "HYNetworking/HYNetworking-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

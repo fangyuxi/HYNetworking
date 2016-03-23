@@ -82,12 +82,3 @@ strip_invalid_archs() {
   fi
 }
 
-
-if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$CONFIGURATION_BUILD_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$CONFIGURATION_BUILD_DIR/HYNetworking/HYNetworking.framework"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$CONFIGURATION_BUILD_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$CONFIGURATION_BUILD_DIR/HYNetworking/HYNetworking.framework"
-fi
