@@ -11,6 +11,11 @@
 #import "HYDelegateRequest.h"
 
 @interface HYViewController ()<HYRequestDelegate>
+{
+    
+}
+
+@property (nonatomic, strong) dispatch_group_t dispatchGroup;
 
 @end
 
@@ -37,19 +42,25 @@
         }];
         
         [request start];
-        
-        //dispatch_group_enter(batch_api_group);
     }
     
     
+    
+    self.dispatchGroup = dispatch_group_create();
     for (NSInteger index = 0; index < 10; ++index)
     {
         HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
         request.delegate = self;
         [request start];
         
-        //dispatch_group_enter(batch_api_group);
+        dispatch_group_enter(self.dispatchGroup);
     }
+    
+    dispatch_group_notify(self.dispatchGroup, dispatch_get_main_queue(), ^(){
+    
+        NSLog(@"Delegate Request All Finished");
+        
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,13 +71,13 @@
 - (void)requestDidFinished:(HYBaseRequest *)request
               withResponse:(HYNetworkResponse *)response
 {
-    
+    dispatch_group_leave(self.dispatchGroup);
 }
 
 - (void)request:(HYBaseRequest *)request
 withErrorResponse:(HYNetworkResponse *)response
 {
-    
+    dispatch_group_leave(self.dispatchGroup);
 }
 
 @end
