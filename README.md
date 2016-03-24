@@ -11,6 +11,10 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+```ruby
+iOS 7.0 or later
+```
+
 ## Installation
 
 HYNetworking is available through [CocoaPods](http://cocoapods.org). To install
