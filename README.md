@@ -17,9 +17,8 @@ HYNetworking is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "HYNetworking" ~>0.01
+pod "HYNetworking" ~>0.3.0
 ```
-
 ## Author
 
 fangyuxi, xcoder.fang@gmail.com
