@@ -10,6 +10,17 @@
 
 @implementation HYSimpleRequest
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _simpleRequestMethod = HYRequestMethodGet;
+        self.validator = nil;
+        return self;
+    }
+    return nil;
+}
 
 - (HYRequestMethod)requestMethod
 {
