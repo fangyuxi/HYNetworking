@@ -84,7 +84,7 @@
  *  @param key    key is NSString type
  */
 - (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key;
-
+- (void)storeData:(NSData *)data forKey:(NSString *)key;
 /**
  *  Store the object in memcache
  *
@@ -93,5 +93,5 @@
  *  @param onDisk if Yes store in disk too
  */
 - (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key onDisk:(BOOL)onDisk;
-
+- (void)storeData:(NSData *)data forKey:(NSString *)key onDisk:(BOOL)onDisk;
 @end
