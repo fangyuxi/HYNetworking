@@ -35,7 +35,7 @@
         [request startWithSuccessHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
             
             
-        } failerHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
+        } failuerHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
             
         } progressHandler:^(HYBaseRequest *request, int64_t progress) {
             

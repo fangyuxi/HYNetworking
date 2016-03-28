@@ -20,7 +20,7 @@
 
 typedef void (^HYConstructingBlock)(id<AFMultipartFormData> formData);
 typedef void (^HYRequestFinishedSuccessHandler)(HYBaseRequest *request, HYNetworkResponse *response);
-typedef void (^HYRequestFinishedFailerHandler)(HYBaseRequest *request, HYNetworkResponse *response);
+typedef void (^HYRequestFinishedFailuerHandler)(HYBaseRequest *request, HYNetworkResponse *response);
 typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progress);
 
 #pragma mark CallBack Delegate Protocal
@@ -187,14 +187,14 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 @property (nonatomic, strong)id<HYNetworkResponseFilterProtocal> responseFilter;
 
 @property (nonatomic, copy)HYRequestFinishedSuccessHandler successHandler;
-@property (nonatomic, copy)HYRequestFinishedFailerHandler failerHandler;
+@property (nonatomic, copy)HYRequestFinishedFailuerHandler failerHandler;
 @property (nonatomic, copy)HYRequestProgressHandler progressHandler;
 
 
 - (void)start;
 
 - (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
-                  failerHandler:(HYRequestFinishedFailerHandler)failerHandler
+                 failuerHandler:(HYRequestFinishedFailuerHandler)failuerHandler
                 progressHandler:(HYRequestProgressHandler)progressHandler;
 
 - (void)cancel;
