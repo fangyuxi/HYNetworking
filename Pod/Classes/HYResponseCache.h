@@ -12,14 +12,14 @@
 @class HYBaseRequest;
 
 /**
- * HYResponseCacheProtocal 
+ * HYResponseCacheProtocol 
  
-   If you have a Class ,want to cache with HYResponseCache ,then you must comform this protocal
+   If you have a Class ,want to cache with HYResponseCache ,then you must comform this protocol
  
    and complete the @required 
  */
 
-@protocol HYResponseCacheProtocal <NSObject>
+@protocol HYResponseCacheProtocol <NSObject>
 
 @required
 
@@ -70,7 +70,7 @@
 /**
  *  The MaxAge of the cache
     
-    If A Object whitch comform the HYResponseCacheProtocal, then, the Object's maxAge could 
+    If A Object whitch comform the HYResponseCacheProtocol, then, the Object's maxAge could 
  
     cover this property
  
@@ -83,7 +83,7 @@
  *  @param object object
  *  @param key    key is NSString type
  */
-- (void)storeObject:(id<HYResponseCacheProtocal>)object forKey:(NSString *)key;
+- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key;
 
 /**
  *  Store the object in memcache
@@ -92,6 +92,6 @@
  *  @param key    key is NSString type
  *  @param onDisk if Yes store in disk too
  */
-- (void)storeObject:(id<HYResponseCacheProtocal>)object forKey:(NSString *)key onDisk:(BOOL)onDisk;
+- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key onDisk:(BOOL)onDisk;
 
 @end

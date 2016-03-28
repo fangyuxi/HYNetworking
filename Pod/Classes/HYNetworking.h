@@ -11,8 +11,8 @@
 
 #import "HYBaseRequest.h"
 
-#import "HYNetworkUrlFilterProtocal.h"
-#import "HYNetworkResponseFilterProtocal.h"
+#import "HYNetworkUrlFilterProtocol.h"
+#import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkSecurityPolicy.h"
 #import "HYNetworkResponse.h"
 #import "HYNetworkConfig.h"

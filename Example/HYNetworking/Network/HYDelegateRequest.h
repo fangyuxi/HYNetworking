@@ -8,6 +8,6 @@
 
 #import "HYBaseRequest.h"
 
-@interface HYDelegateRequest : HYBaseRequest<HYBaseRequestProtocal, HYRequestValidator>
+@interface HYDelegateRequest : HYBaseRequest<HYBaseRequestProtocol, HYRequestValidator>
 
 @end

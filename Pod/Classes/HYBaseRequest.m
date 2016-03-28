@@ -23,7 +23,7 @@
     self = [super init];
     if (self)
     {
-        NSAssert([self conformsToProtocol:@protocol(HYBaseRequestProtocal)], @"Your Must ConformToProtocal : HYBaseRequestProtocal");
+        NSAssert([self conformsToProtocol:@protocol(HYBaseRequestProtocol)], @"Your Must ConformToProtocol : HYBaseRequestProtocol");
         
         self.validator = (id <HYRequestValidator>)self;
         
@@ -104,7 +104,7 @@
     return [NSString stringWithFormat:@"url:%@ identifier : %@", [self apiUrl],[self identifier]];
 }
 
-#pragma mark protocal empty method must complete in child
+#pragma mark protocol empty method must complete in child
 
 - (HYRequestMethod)requestMethod
 {

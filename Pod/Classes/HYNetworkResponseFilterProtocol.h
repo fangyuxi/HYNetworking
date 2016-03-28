@@ -1,5 +1,5 @@
 //
-//  HYNetworkResponseFilterProtocal.h
+//  HYNetworkResponseFilterProtocol.h
 //  MyFirst
 //
 //  Created by fangyuxi on 16/3/12.
@@ -12,7 +12,7 @@
 
 /** 过滤返回值filter 用于业务方过滤框架性质的网络错误 **/
 
-@protocol HYNetworkResponseFilterProtocal <NSObject>
+@protocol HYNetworkResponseFilterProtocol <NSObject>
 
 @required
 - (NSError *)filterResponse:(HYNetworkResponse *)response withRequest:(HYBaseRequest *)request;

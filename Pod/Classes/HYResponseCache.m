@@ -96,7 +96,7 @@
 
 - (void)p_storeKeyWithDataToDisk:(NSDictionary *)param
 {
-    id<HYResponseCacheProtocal> object = [param objectForKey:@"object"];
+    id<HYResponseCacheProtocol> object = [param objectForKey:@"object"];
     NSString *key = [param objectForKey:@"key"];
     
     NSData *data = [object ResponsePresentingData];

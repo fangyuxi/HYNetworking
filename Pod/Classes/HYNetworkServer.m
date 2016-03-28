@@ -18,7 +18,7 @@
     self = [super init];
     if (self)
     {
-        NSAssert([self conformsToProtocol:@protocol(HYNetworkServerProtocal)], @"Your Must ConformToProtocal : HYNetworkServerProtocal");
+        NSAssert([self conformsToProtocol:@protocol(HYNetworkServerProtocol)], @"Your Must ConformToProtocol : HYNetworkServerProtocol");
         
         return self;
     }

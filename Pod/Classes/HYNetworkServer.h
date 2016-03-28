@@ -10,7 +10,7 @@
 
 
 //任何的server必须继承这个协议
-@protocol HYNetworkServerProtocal <NSObject>
+@protocol HYNetworkServerProtocol <NSObject>
 
 @property (nonatomic, readonly)NSString *serverName;
 @property (nonatomic, assign, getter=isOnline)BOOL online;
@@ -19,7 +19,7 @@
 
 @end
 
-@interface HYNetworkServer : NSObject<HYNetworkServerProtocal>
+@interface HYNetworkServer : NSObject<HYNetworkServerProtocol>
 {
     
 }

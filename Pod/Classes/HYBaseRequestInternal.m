@@ -11,7 +11,7 @@
 #import "HYNetworkLogger.h"
 #import <objc/runtime.h>
 
-static HYBaseRequestInternal *sharedInstance       = nil;
+static HYBaseRequestInternal *sharedInstance = nil;
 
 @implementation HYBaseRequestInternal{
 
@@ -61,7 +61,7 @@ static HYBaseRequestInternal *sharedInstance       = nil;
     dispatch_async(_hynetwork_series_queue , ^{
         
         
-        //require protocal method
+        //require protocol method
         HYRequestMethod method = [request requestMethod];
         
         NSAssert(method == HYRequestMethodGet || method == HYRequestMethodPost || method == HYRequestMethodHead || method == HYRequestMethodPut || method == HYRequestMethodDelete || method == HYRequestMethodPatch,@"Please Provide Legal Request Method");
@@ -280,7 +280,7 @@ static HYBaseRequestInternal *sharedInstance       = nil;
     else
     {
         NSArray *filters = [_networkConfig urlFilters];
-        for (id<HYNetworkUrlFilterProtocal>filter in filters)
+        for (id<HYNetworkUrlFilterProtocol>filter in filters)
         {
             url = [filter filterUrl:url withRequest:request];
         }
@@ -346,7 +346,7 @@ static HYBaseRequestInternal *sharedInstance       = nil;
     }
     else
     {
-        for (id<HYNetworkResponseFilterProtocal> filter in _networkConfig.responseFilters)
+        for (id<HYNetworkResponseFilterProtocol> filter in _networkConfig.responseFilters)
         {
             error = [filter filterResponse:responseObject withRequest:request];
         }
@@ -444,7 +444,7 @@ static HYBaseRequestInternal *sharedInstance       = nil;
                                         andResponse:(HYNetworkResponse *)responseObject
 {
     
-    for (id<HYNetworkResponseFilterProtocal>filter in _networkConfig.responseFilters)
+    for (id<HYNetworkResponseFilterProtocol>filter in _networkConfig.responseFilters)
     {
         NSError *error = [filter filterResponse:responseObject withRequest:request];
         if (error)

@@ -1,5 +1,5 @@
 //
-//  HYNetworkUrlFilterProtocal.h
+//  HYNetworkUrlFilterProtocol.h
 //  MyFirst
 //
 //  Created by fangyuxi on 16/3/8.
@@ -12,7 +12,7 @@
 
 /** 参数filter **/
 
-@protocol HYNetworkUrlFilterProtocal <NSObject>
+@protocol HYNetworkUrlFilterProtocol <NSObject>
 
 @required
 - (NSString *)filterUrl:(NSString *)url withRequest:(HYBaseRequest *)request;

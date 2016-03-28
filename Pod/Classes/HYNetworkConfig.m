@@ -55,7 +55,7 @@
 
 #pragma mark filters
 
-- (void)addUrlFilter:(id<HYNetworkUrlFilterProtocal>)filter
+- (void)addUrlFilter:(id<HYNetworkUrlFilterProtocol>)filter
 {
     if (!filter)
     {
@@ -65,7 +65,7 @@
     [_urlFilters addObject:filter];
 }
 
-- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocal>)filter
+- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter
 {
     if (!filter)
     {

@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HYNetworkUrlFilterProtocal.h"
+#import "HYNetworkUrlFilterProtocol.h"
 #import "HYNetworkSecurityPolicy.h"
-#import "HYNetworkResponseFilterProtocal.h"
+#import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkServer.h"
 #import "HYResponseCache.h"
 
@@ -26,17 +26,17 @@
 @property (nonatomic, strong) HYNetworkServer *defaultSever;
 
 //用于向url添加参数的filter，比如签名，就可以设计成一个filter，公共参数，也可以设计成一个filter 组成 filter chain
-@property (nonatomic, strong, readonly) NSArray<id<HYNetworkUrlFilterProtocal>> *urlFilters;
+@property (nonatomic, strong, readonly) NSArray<id<HYNetworkUrlFilterProtocol>> *urlFilters;
 //用于向已经验证完毕的response过滤错误
-@property (nonatomic, strong, readonly) NSArray<id<HYNetworkResponseFilterProtocal>> *responseFilters;
+@property (nonatomic, strong, readonly) NSArray<id<HYNetworkResponseFilterProtocol>> *responseFilters;
 
 //网络安全配置
 @property (nonatomic, strong) HYNetworkSecurityPolicy *securityPolicy;
 //所有Reqeust使用的缓存
 @property (nonatomic, strong) HYResponseCache *cache;
 
-- (void)addUrlFilter:(id<HYNetworkUrlFilterProtocal>)filter;
-- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocal>)filter;
+- (void)addUrlFilter:(id<HYNetworkUrlFilterProtocol>)filter;
+- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter;
 
 
 //日志开关

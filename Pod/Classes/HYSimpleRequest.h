@@ -16,13 +16,13 @@
 
 @class HYSimpleRequest;
 
-@interface HYSimpleRequest : HYBaseRequest<HYBaseRequestProtocal>
+@interface HYSimpleRequest : HYBaseRequest<HYBaseRequestProtocol>
 {
     
 }
 
 /**
- *  以下属性对应的是HYBaseRequestProtocal中的方法
+ *  以下属性对应的是HYBaseRequestProtocol中的方法
  */
 
 @property (nonatomic, assign) HYRequestMethod simpleRequestMethod;

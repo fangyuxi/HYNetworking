@@ -10,8 +10,8 @@
 #import "AFNetworking.h"
 #import "HYNetworkDefines.h"
 #import "HYNetworkResponse.h"
-#import "HYNetworkResponseFilterProtocal.h"
-#import "HYNetworkUrlFilterProtocal.h"
+#import "HYNetworkResponseFilterProtocol.h"
+#import "HYNetworkUrlFilterProtocol.h"
 #import "HYNetworkServer.h"
 
 #pragma mark block
@@ -23,9 +23,9 @@ typedef void (^HYRequestFinishedSuccessHandler)(HYBaseRequest *request, HYNetwor
 typedef void (^HYRequestFinishedFailuerHandler)(HYBaseRequest *request, HYNetworkResponse *response);
 typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progress);
 
-#pragma mark CallBack Delegate Protocal
+#pragma mark CallBack Delegate Protocol
 
-@protocol HYBaseRequestProtocal <NSObject>
+@protocol HYBaseRequestProtocol <NSObject>
 
 @required
 
@@ -110,7 +110,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 
 
-#pragma mark CallBack Delegate Protocal
+#pragma mark CallBack Delegate Protocol
 
 //回调
 @protocol HYRequestDelegate <NSObject>
@@ -131,7 +131,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 
 
-#pragma mark Validator Protocal
+#pragma mark Validator Protocol
 
 /**
  *  验证返回值和参数 可以指向自己 
@@ -153,7 +153,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 #pragma mark HYBaseRequest Interface
 
-@interface HYBaseRequest : NSObject<HYBaseRequestProtocal>
+@interface HYBaseRequest : NSObject <HYBaseRequestProtocol>
 {
     
     
@@ -171,7 +171,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  */
 @property (nonatomic, strong) HYNetworkServer *server;
 
-@property (nonatomic, strong)NSDictionary *userInfo;
+@property (nonatomic, strong) NSDictionary *userInfo;
 
 /**
  *  debug 此request是否打印log 如果为true 那么不论全局log是否打印，这个request都打印
@@ -183,12 +183,12 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  *  参数和返回值过滤器，如果没有赋值，那么默认使用HYNetworkConfig里面的过滤器
     如果有赋值，会忽略掉config
  */
-@property (nonatomic, strong)id<HYNetworkUrlFilterProtocal> urlFilter;
-@property (nonatomic, strong)id<HYNetworkResponseFilterProtocal> responseFilter;
+@property (nonatomic, strong) id<HYNetworkUrlFilterProtocol> urlFilter;
+@property (nonatomic, strong) id<HYNetworkResponseFilterProtocol> responseFilter;
 
-@property (nonatomic, copy)HYRequestFinishedSuccessHandler successHandler;
-@property (nonatomic, copy)HYRequestFinishedFailuerHandler failerHandler;
-@property (nonatomic, copy)HYRequestProgressHandler progressHandler;
+@property (nonatomic, copy) HYRequestFinishedSuccessHandler successHandler;
+@property (nonatomic, copy) HYRequestFinishedFailuerHandler failerHandler;
+@property (nonatomic, copy) HYRequestProgressHandler progressHandler;
 
 
 - (void)start;

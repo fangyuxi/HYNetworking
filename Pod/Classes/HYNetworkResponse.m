@@ -10,20 +10,20 @@
 #import "HYNetworking.h"
 #import <CommonCrypto/CommonDigest.h>
 
-static NSString *const HYResponseStatusKey = @"HYResponseStatusKey";
-static NSString *const HYResponseHTTPHeadFieldsKey = @"HYResponseHTTPHeadFieldsKey";
-static NSString *const HYResponseHTTPStatusCodeKey = @"HYResponseHTTPStatusCodeKey";
-static NSString *const HYResponseContentKey = @"HYResponseContentKey";
-static NSString *const HYResponseRequestURLKey = @"HYResponseRequestURLKey";
+static NSString *const HYResponseStatusKey            = @"HYResponseStatusKey";
+static NSString *const HYResponseHTTPHeadFieldsKey    = @"HYResponseHTTPHeadFieldsKey";
+static NSString *const HYResponseHTTPStatusCodeKey    = @"HYResponseHTTPStatusCodeKey";
+static NSString *const HYResponseContentKey           = @"HYResponseContentKey";
+static NSString *const HYResponseRequestURLKey        = @"HYResponseRequestURLKey";
 static NSString *const HYResponseRequestIdentifierKey = @"HYResponseRequestIdentifierKey";
-static NSString *const HYResponseErrorKey = @"HYResponseErrorKey";
-static NSString *const HYResponseErrorMSGKey = @"HYResponseErrorMSGKey";
-static NSString *const HYResponseNSRequestKey = @"HYResponseNSRequestKey";
-static NSString *const HYResponseHYRequestKey = @"HYResponseHYRequestKey";
-static NSString *const HYResponseCacheDate = @"HYResponseCacheDate";
-static NSString *const HYResponseCacheMaxAge = @"HYResponseCacheMaxAge";
+static NSString *const HYResponseErrorKey             = @"HYResponseErrorKey";
+static NSString *const HYResponseErrorMSGKey          = @"HYResponseErrorMSGKey";
+static NSString *const HYResponseNSRequestKey         = @"HYResponseNSRequestKey";
+static NSString *const HYResponseHYRequestKey         = @"HYResponseHYRequestKey";
+static NSString *const HYResponseCacheDate            = @"HYResponseCacheDate";
+static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge";
 
-@interface HYNetworkResponse ()<HYResponseCacheProtocal>
+@interface HYNetworkResponse ()<HYResponseCacheProtocol>
 {
     
 }
