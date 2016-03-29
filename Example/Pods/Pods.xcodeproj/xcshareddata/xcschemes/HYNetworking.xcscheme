@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '50436BDE1AFC523D92A82677'
+               BlueprintIdentifier = '394DE57FEAF51DE4E8C5C480'
                BlueprintName = 'HYNetworking'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libHYNetworking.a'>
