@@ -23,7 +23,7 @@ static NSString *const HYResponseHYRequestKey         = @"HYResponseHYRequestKey
 static NSString *const HYResponseCacheDate            = @"HYResponseCacheDate";
 static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge";
 
-@interface HYNetworkResponse ()<HYResponseCacheProtocol>
+@interface HYNetworkResponse ()
 {
     
 }
@@ -143,11 +143,6 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
     return nil;
 }
 
-+ (BOOL)supportsSecureCoding
-{
-    return YES;
-}
-
 #pragma mark error setter format error&msg
 
 - (void)setError:(NSError *)error
@@ -188,23 +183,6 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
 - (BOOL)isExpire
 {
     return [self.cacheDate timeIntervalSinceDate:[NSDate new]] >= (_maxAge ? _maxAge : [HYNetworkConfig sharedInstance].cache.maxAge);
-}
-
-- (NSData *)ResponsePresentingData
-{
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
-    return data;
-}
-
-- (NSString *)cacheKey
-{
-    const char *str = [self.requestURL UTF8String];
-    unsigned char r[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(str, (CC_LONG)strlen(str), r);
-    NSString *key = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-                                                    r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]];
-    
-    return key;
 }
 
 

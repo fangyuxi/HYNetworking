@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger , HYResponseStatus)
     HYResponseStatusValidatorFailed
 };
 
-@interface HYNetworkResponse : NSObject<NSSecureCoding>
+@interface HYNetworkResponse : NSObject<HYNetworkCacheObjectProtocol>
 {
     
 }

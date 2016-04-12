@@ -9,11 +9,25 @@
 #import "HYResponseCache.h"
 #import "HYNetworking.h"
 
+NSString *const HYResponseCacheDataErrorNotification = @"HYResponseCacheDataErrorNotification";
+
 @implementation HYResponseCache{
 
     NSCache *_memoryCache;
-    NSOperationQueue *_cacheDiskInQueue;
-    NSOperationQueue *_cacheDiskOutQueue;
+    dispatch_semaphore_t _lock;
+    dispatch_queue_t _queue;
+}
+
+#pragma mark lock
+
+- (void)lock
+{
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
+}
+
+- (void)unlock
+{
+    dispatch_semaphore_signal(_lock);
 }
 
 #pragma mark init
@@ -34,13 +48,10 @@
     if (self)
     {
         _path = [path copy];
+        _lock = dispatch_semaphore_create(1);
+        _queue = dispatch_queue_create([@"com.58.HYResponseCacheQueue" UTF8String], DISPATCH_QUEUE_CONCURRENT);
         _memoryCache = [[NSCache alloc] init];
         _maxAge = KHYResponseCacheMaxAge;
-        
-        _cacheDiskInQueue = [[NSOperationQueue alloc] init];
-        _cacheDiskOutQueue.maxConcurrentOperationCount = 1;
-        _cacheDiskOutQueue = [[NSOperationQueue alloc] init];
-        _cacheDiskOutQueue.maxConcurrentOperationCount = 1;
         
         return self;
     }
@@ -63,47 +74,135 @@
 
 #pragma mark store
 
-- (void)storeObject:(id)object forKey:(NSString *)key
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+          withBlock:(void(^)())block
+{
+    if (!block) {return;}
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_queue, ^{
+       __strong typeof(weakSelf) self = weakSelf;
+        [self storeObject:object forKey:key];
+        block();
+    });
+}
+
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+{
+    [self storeObject:object forKey:key onDisk:YES];
+}
+
+
+
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object forKey:(NSString *)key onDisk:(BOOL)onDisk
 {
     if (!object || !key || ![key isKindOfClass:[NSString class]] || key.length == 0)
     {
         return;
     }
     
-    [self storeObject:object forKey:key onDisk:YES];
-}
-
-- (void)storeObject:(id)object forKey:(NSString *)key onDisk:(BOOL)onDisk
-{
-    if (!object || !key || ![key isKindOfClass:[NSString class]] || key.length == 0)
-    {
-        return;
-    }
+    //memoryCache already thread-safe
     [_memoryCache setObject:object forKey:key];
     
     if (onDisk)
     {
-        NSDictionary *param = @{@"object":object, @"key":key};
-        
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
-                                                                                selector:@selector(p_storeKeyWithDataToDisk:)
-                                                                                  object:param];
-        [_cacheDiskInQueue addOperation:operation];
+        [self lock];
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
+        if (data)
+        {
+            if([self p_fileWriteWithName:key data:data])
+            {
+                [self unlock];
+            }
+            else
+            {
+                [self unlock];
+                
+                //错误通知
+            }
+            
+        }
+        else
+        {
+            [self unlock];
+            //错误通知
+        }
     }
 }
 
-#pragma mark store private
-
-- (void)p_storeKeyWithDataToDisk:(NSDictionary *)param
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+             onDisk:(BOOL)onDisk
+               with:(void(^)())block
 {
-    id<HYResponseCacheProtocol> object = [param objectForKey:@"object"];
-    NSString *key = [param objectForKey:@"key"];
+    if (!block) {return;}
     
-    NSData *data = [object ResponsePresentingData];
-    if (data)
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_queue, ^{
+        __strong typeof(weakSelf) self = weakSelf;
+        [self storeObject:object forKey:key onDisk:onDisk];
+        block();
+    });
+}
+
+#pragma mark get object
+
+- (id<HYNetworkCacheObjectProtocol>)objectForKey:(NSString *)key;
+{
+    if (!key) {return nil;}
+
+    //query object from memcache
+    id<HYNetworkCacheObjectProtocol> object = [_memoryCache objectForKey:key];
+    if (object){return object;}
+    else
     {
-        [self p_fileWriteWithName:key data:data];
+        [self lock];
+        NSData *data = [self p_fileReadWithName:key];
+        if (data)
+        {
+            id<HYNetworkCacheObjectProtocol> object = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            if (object) {return object;}
+        }
+        [self unlock];
     }
+    return nil;
+}
+
+- (void)objectForKey:(NSString *)key
+           withBlock:(void(^)(NSString *key, id<HYNetworkCacheObjectProtocol> object))block
+{
+    if (!block) {return;}
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_queue, ^{
+        __strong typeof(weakSelf) self = weakSelf;
+        id<HYNetworkCacheObjectProtocol> object = [self objectForKey:key];
+        block(key, object);
+    });
+}
+
+#pragma mark removeObject
+
+- (void)removeObjectForKey:(NSString *)key
+{
+    
+}
+
+- (void)removeObjectForKey:(NSString *)key withBlock:(void(^)(NSString *key))block
+{
+    
+}
+
+- (void)removeAllObjects
+{
+    
+}
+
+- (void)removeAllObjectsWithBlock:(void(^)(void))block
+{
+    
 }
 
 #pragma mark file

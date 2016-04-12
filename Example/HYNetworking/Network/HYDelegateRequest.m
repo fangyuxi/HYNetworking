@@ -27,7 +27,10 @@
 
 - (id)jsonValidatorData
 {
-    return @{@"result": @{@"data":@{@"appParamVersionVO":@{@"cateVersion":[NSNumber class]}}}};
+    return @{@"result":
+                 @{@"data":
+                     @{@"appParamVersionVO":
+                            @{@"cateVersion":[NSNumber class]}}}};
 }
 
 - (id)requestArgument

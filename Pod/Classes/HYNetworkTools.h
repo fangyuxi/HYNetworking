@@ -20,4 +20,5 @@
 
 + (BOOL)HYNetworkIsEmptyString:(NSString *)string;
 
++ (NSString *)cacheKeyWithUrl:(NSString *)url;
 @end

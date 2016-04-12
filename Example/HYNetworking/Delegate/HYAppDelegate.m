@@ -38,6 +38,9 @@
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     
     [config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
+    
+    
+    
     [config addResponseFilter:[[HYNetworkGlobalResponseFilter alloc] init]];
 }
 

@@ -8,90 +8,85 @@
 
 #import <Foundation/Foundation.h>
 
+
+extern NSString *const HYResponseCacheDataErrorNotification;
+
 @class HYNetworkResponse;
 @class HYBaseRequest;
 
-/**
- * HYResponseCacheProtocol 
- 
-   If you have a Class ,want to cache with HYResponseCache ,then you must comform this protocol
- 
-   and complete the @required 
- */
 
-@protocol HYResponseCacheProtocol <NSObject>
+@protocol HYNetworkCacheObjectProtocol <NSObject, NSCoding>
 
 @required
 
 @property (nonatomic, assign, readonly)NSTimeInterval maxAge;
 
 - (BOOL)isExpire;
-- (NSData *)ResponsePresentingData;
-- (NSString *)cacheKey;
 
 @end
-
-/**
- *  HYResponseCache The Cache is file based, Memory cache used NSCache
- */
 
 @interface HYResponseCache : NSObject
 {
     
 }
 
+@property (nonatomic, copy, readonly) NSString *path;
+
+@property (nonatomic, assign) NSUInteger totalCostLimit;
+
+@property (nonatomic, assign)NSUInteger countLimit;
+
+@property (nonatomic, assign)NSTimeInterval maxAge;
+
+#pragma mark init
+
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
-/**
- *  This is the NS_DESIGNATED_INITIALIZER, Please Do not Use init and new
- *
- *  @param path   The File Full Path
- *
- *  @return The   Cache Object
- */
 - (instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
-/**
- *  The Cache File Full Path
- */
-@property (nonatomic, copy, readonly) NSString *path;
+#pragma mark storeObject
 
-/**
- *  limits are imprecise/not strict for memory cache
- */
-@property (nonatomic, assign) NSUInteger totalCostLimit;
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key;
 
-/**
- *  limits are imprecise/not strict for memory cache
- */
-@property (nonatomic, assign)NSUInteger countLimit;
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+          withBlock:(void(^)())block;
 
-/**
- *  The MaxAge of the cache
-    
-    If A Object whitch comform the HYResponseCacheProtocol, then, the Object's maxAge could 
- 
-    cover this property
- 
- */
-@property (nonatomic, assign)NSTimeInterval maxAge;
 
-/**
- *  Store the object in memcache and diskcache
- *
- *  @param object object
- *  @param key    key is NSString type
- */
-- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key;
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+             onDisk:(BOOL)onDisk;
 
-/**
- *  Store the object in memcache
- *
- *  @param object object
- *  @param key    key is NSString type
- *  @param onDisk if Yes store in disk too
- */
-- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key onDisk:(BOOL)onDisk;
+- (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
+             forKey:(NSString *)key
+             onDisk:(BOOL)onDisk
+               with:(void(^)())block;
+
+#pragma mark getObject
+
+- (id<HYNetworkCacheObjectProtocol>)objectForKey:(NSString *)key;
+
+- (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<HYNetworkCacheObjectProtocol> object))block;
+
+#pragma mark removeObject
+
+- (void)removeObjectForKey:(NSString *)key;
+- (void)removeObjectForKey:(NSString *)key withBlock:(void(^)(NSString *key))block;
+- (void)removeAllObjects;
+- (void)removeAllObjectsWithBlock:(void(^)(void))block;
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
