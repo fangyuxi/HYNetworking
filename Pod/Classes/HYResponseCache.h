@@ -55,6 +55,7 @@ extern NSString *const HYResponseCacheDataErrorNotification;
           withBlock:(void(^)())block;
 
 
+<<<<<<< HEAD
 - (void)storeObject:(id<HYNetworkCacheObjectProtocol>)object
              forKey:(NSString *)key
              onDisk:(BOOL)onDisk;
@@ -77,6 +78,25 @@ extern NSString *const HYResponseCacheDataErrorNotification;
 - (void)removeAllObjects;
 - (void)removeAllObjectsWithBlock:(void(^)(void))block;
 
+=======
+/**
+ *  Store the object in memcache and diskcache
+ *
+ *  @param object object
+ *  @param key    key is NSString type
+ */
+- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key;
+- (void)storeData:(NSData *)data forKey:(NSString *)key;
+/**
+ *  Store the object in memcache
+ *
+ *  @param object object
+ *  @param key    key is NSString type
+ *  @param onDisk if Yes store in disk too
+ */
+- (void)storeObject:(id<HYResponseCacheProtocol>)object forKey:(NSString *)key onDisk:(BOOL)onDisk;
+- (void)storeData:(NSData *)data forKey:(NSString *)key onDisk:(BOOL)onDisk;
+>>>>>>> origin/master
 @end
 
 
