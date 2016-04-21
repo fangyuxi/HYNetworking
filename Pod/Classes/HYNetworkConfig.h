@@ -11,7 +11,6 @@
 #import "HYNetworkSecurityPolicy.h"
 #import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkServer.h"
-#import "HYResponseCache.h"
 
 @interface HYNetworkConfig : NSObject
 {
@@ -33,7 +32,7 @@
 //网络安全配置
 @property (nonatomic, strong) HYNetworkSecurityPolicy *securityPolicy;
 //所有Reqeust使用的缓存
-@property (nonatomic, strong) HYResponseCache *cache;
+//@property (nonatomic, strong) HYResponseCache *cache;
 
 - (void)addUrlFilter:(id<HYNetworkUrlFilterProtocol>)filter;
 - (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter;

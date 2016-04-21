@@ -20,6 +20,5 @@
 #import "HYNetworkTools.h"
 #import "HYNetworkServer.h"
 #import "HYSimpleRequest.h"
-#import "HYResponseCache.h"
 
 #endif /* HYNetwork_h */

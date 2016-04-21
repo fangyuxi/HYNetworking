@@ -59,8 +59,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 {
     
     dispatch_async(_hynetwork_series_queue , ^{
-        
-        
+    
         //require protocol method
         HYRequestMethod method = [request requestMethod];
         

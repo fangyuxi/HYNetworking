@@ -178,12 +178,6 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
     }
 }
 
-#pragma mark cache 
-
-- (BOOL)isExpire
-{
-    return [self.cacheDate timeIntervalSinceDate:[NSDate new]] >= (_maxAge ? _maxAge : [HYNetworkConfig sharedInstance].cache.maxAge);
-}
 
 
 @end
