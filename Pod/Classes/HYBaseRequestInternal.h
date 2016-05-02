@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HYBaseRequest.h"
+#import "HYBaseRequestPrivate.h"
 #import "HYNetworkConfig.h"
 
 @interface HYBaseRequestInternal : NSObject

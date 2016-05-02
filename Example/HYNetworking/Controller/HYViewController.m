@@ -24,13 +24,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    for (NSInteger index = 0; index < 10; ++index)
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    for (NSInteger index = 0; index < 100; ++index)
     {
         HYSimpleRequest *request = [[HYSimpleRequest alloc] init];
         request.simpleRequestMethod = HYRequestMethodGet;
         request.simpleApiUrl = @"/api/system?method=initApp";
-        request.simpleIdentifier = @"fangyuxi";
+        request.simpleName = @"fangyuxi";
         
         [request startWithSuccessHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
             
@@ -46,21 +47,26 @@
     
     
     
-    self.dispatchGroup = dispatch_group_create();
-    for (NSInteger index = 0; index < 10; ++index)
+    //self.dispatchGroup = dispatch_group_create();
+    for (NSInteger index = 0; index < 100; ++index)
     {
-        HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
-        request.delegate = self;
-        [request start];
         
-        dispatch_group_enter(self.dispatchGroup);
+        
+        //dispatch_group_enter(self.dispatchGroup);
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
+            request.delegate = self;
+            [request start];
+        });
     }
     
-    dispatch_group_notify(self.dispatchGroup, dispatch_get_main_queue(), ^(){
-    
-        NSLog(@"Delegate Request All Finished");
-        
-    });
+//    dispatch_group_notify(self.dispatchGroup, dispatch_get_main_queue(), ^(){
+//    
+//        NSLog(@"Delegate Request All Finished");
+//        
+//    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,13 +77,13 @@
 - (void)requestDidFinished:(HYBaseRequest *)request
               withResponse:(HYNetworkResponse *)response
 {
-    dispatch_group_leave(self.dispatchGroup);
+    //dispatch_group_leave(self.dispatchGroup);
 }
 
 - (void)request:(HYBaseRequest *)request
 withErrorResponse:(HYNetworkResponse *)response
 {
-    dispatch_group_leave(self.dispatchGroup);
+    //dispatch_group_leave(self.dispatchGroup);
 }
 
 @end

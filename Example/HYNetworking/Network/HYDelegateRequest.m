@@ -20,12 +20,12 @@
     return @"/api/system?method=initApp";
 }
 
-- (NSString *)identifier
+- (NSString *)name
 {
     return @"delegate";
 }
 
-- (id)jsonValidatorData
+- (id)responseDataValidator
 {
     return @{@"result":
                  @{@"data":

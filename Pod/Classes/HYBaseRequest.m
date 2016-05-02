@@ -7,6 +7,7 @@
 //
 
 #import "HYBaseRequest.h"
+#import "HYBaseRequestPrivate.h"
 #import "HYBaseRequestInternal.h"
 #import <objc/runtime.h>
 
@@ -101,7 +102,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"url:%@ identifier : %@", [self apiUrl],[self identifier]];
+    return [NSString stringWithFormat:@"url:%@ identifier : %@", [self apiUrl],[self name]];
 }
 
 #pragma mark protocol empty method must complete in child
@@ -118,7 +119,7 @@
     return nil ;
 }
 
-- (NSString *)identifier
+- (NSString *)name
 {
     [self doesNotRecognizeSelector:_cmd];
     return nil ;

@@ -41,10 +41,11 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 /**
  *  一个请求的唯一标识符，原则上不应该重复，业务层可以区分不同的业务请求
+ *  可以在log中体现
  *
  *  @return string
  */
-- (NSString *)identifier;
+- (NSString *)name;
 
 @optional
 
@@ -146,7 +147,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  *
  *  @return 数组或者字典
  */
-- (id)jsonValidatorData;
+- (id)responseDataValidator;
 
 @end
 
@@ -200,9 +201,6 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 - (void)cancel;
 - (BOOL)isLoading;
 
-//打破循环引用
-- (void)clearBlock;
-
 
 /**
  *  debug 此request是否打印log 如果为true 那么不论全局log是否打印，这个request都打印
@@ -215,7 +213,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 - (BOOL)isEqualToRequest:(HYBaseRequest *)request;
 
 /**
- *  真正发起请求的URL,URL拼装正确后，internal会向这个属性赋值
+ *  真正发起请求的URL 调用start后可用
  */
 @property (nonatomic, copy, readonly)NSString *URL;
 

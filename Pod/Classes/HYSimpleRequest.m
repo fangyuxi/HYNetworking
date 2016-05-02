@@ -33,9 +33,9 @@
     return _simpleApiUrl;
 }
 
-- (NSString *)identifier
+- (NSString *)name
 {
-    return _simpleIdentifier;
+    return _simpleName;
 }
 
 

@@ -17,7 +17,6 @@
 #import "HYNetworkResponse.h"
 #import "HYNetworkConfig.h"
 #import "HYNetworkDefines.h"
-#import "HYNetworkTools.h"
 #import "HYNetworkServer.h"
 #import "HYSimpleRequest.h"
 

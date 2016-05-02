@@ -27,7 +27,7 @@
 
 @property (nonatomic, assign) HYRequestMethod simpleRequestMethod;
 @property (nonatomic, copy) NSString *simpleApiUrl;
-@property (nonatomic, copy) NSString *simpleIdentifier;
+@property (nonatomic, copy) NSString *simpleName;
 @property (nonatomic, copy) NSString *simpleFullUrl;
 @property (nonatomic, strong) NSDictionary *simpleArgument;
 @property (nonatomic, strong) NSDictionary *simpleHeaderValueDictionary;
