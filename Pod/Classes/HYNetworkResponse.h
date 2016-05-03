@@ -13,7 +13,7 @@
 //Response状态
 typedef NS_ENUM(NSInteger , HYResponseStatus)
 {
-    HYResponseStatusDefault = 0,
+    HYResponseStatusDefault = -1,
     HYResponseStatusSuccess,
     HYResponseStatusSuccessWithoutValidator,
     HYResponseStatusConnectionFailed,

@@ -195,8 +195,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 - (void)start;
 
 - (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
-                 failuerHandler:(HYRequestFinishedFailuerHandler)failuerHandler
-                progressHandler:(HYRequestProgressHandler)progressHandler;
+                 failuerHandler:(HYRequestFinishedFailuerHandler)failuerHandler;
 
 - (void)cancel;
 - (BOOL)isLoading;

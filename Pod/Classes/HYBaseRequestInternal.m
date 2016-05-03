@@ -9,13 +9,16 @@
 #import "HYBaseRequestInternal.h"
 #import "HYNetworkLogger.h"
 #import <objc/runtime.h>
+#import "AFHTTPSessionManager+Download.h"
 
 static HYBaseRequestInternal *sharedInstance = nil;
 
 @implementation HYBaseRequestInternal{
 
+    // shared manager
     AFHTTPSessionManager *_manager;
-
+    // shared configer
+    HYNetworkConfig *_networkConfig;
 }
 
 
@@ -50,7 +53,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 - (void)sendRequest:(HYBaseRequest *)request
 {
-    //require protocol method
+    //请求方法
     HYRequestMethod method = [request requestMethod];
     
     NSAssert(method == HYRequestMethodGet ||
@@ -60,24 +63,29 @@ static HYBaseRequestInternal *sharedInstance = nil;
              method == HYRequestMethodDelete ||
              method == HYRequestMethodPatch,@"Please Provide Legal Request Method");
     
+    //请求url
     NSString *url = [self p_buildFullUrlWithRequest:request];
     
-    //optional protcal method
+    //下载地址
     NSString *downloadPath = [request respondsToSelector:@selector(downloadPath)] ? [request downloadPath] : nil;
+    
+    //参数
     id param = [request respondsToSelector:@selector(requestArgument)] ? [request requestArgument] : nil;
+    
+    //post body
     HYConstructingBlock constructingBlock = [request respondsToSelector:@selector(constructingBodyBlock)] ? [request constructingBodyBlock]: nil;
     
-    //timeout
+    //超时时间
     _manager.requestSerializer.timeoutInterval = [request respondsToSelector:@selector(requestTimeoutInterval)] ? [request requestTimeoutInterval] : KHYNetworkDefaultTimtout;
     
-    //security
+    //https 配置
     NSUInteger pinningMode                  = [HYNetworkConfig sharedInstance].securityPolicy.pinningMode;
     AFSecurityPolicy *securityPolicy        = [AFSecurityPolicy policyWithPinningMode:pinningMode];
     securityPolicy.allowInvalidCertificates = [HYNetworkConfig sharedInstance].securityPolicy.allowInvalidCertificates;
     securityPolicy.validatesDomainName      = [HYNetworkConfig sharedInstance].securityPolicy.validatesDomainName;
     _manager.securityPolicy = securityPolicy;
     
-    //header
+    //请求header
     NSDictionary *headerFieldValueDictionary = [request respondsToSelector:@selector(requestHeaderValueDictionary)] ? [request requestHeaderValueDictionary]: nil;
     if (headerFieldValueDictionary != nil)
     {
@@ -90,13 +98,11 @@ static HYBaseRequestInternal *sharedInstance = nil;
                 [_manager.requestSerializer setValue:(NSString *)value
                                   forHTTPHeaderField:(NSString *)httpHeaderField];
             }
-            else
-            {
-                
-            }
         }
     }
     
+    
+    //发送请求
     [self p_sendRequestWithUrl:url
                          param:param
                         method:method
@@ -349,7 +355,10 @@ static HYBaseRequestInternal *sharedInstance = nil;
             {
                 status = HYResponseStatusValidatorFailed;
                 [hyResponse setValue:@(status) forKey:@"status"];
-                [hyResponse setValue:[NSError errorWithDomain:KNetworkHYErrorDomain code:KNetworkResponseValidatetErrorCode userInfo:nil] forKey:@"error"];
+                [hyResponse setValue:[NSError errorWithDomain:KNetworkHYErrorDomain
+                                                         code:KNetworkResponseValidatetErrorCode
+                                                     userInfo:nil]
+                              forKey:@"error"];
                 
                 [self p_toggleFailerRequestDelegateAndBlockWithRequest:request andResponse:hyResponse];
                 return;

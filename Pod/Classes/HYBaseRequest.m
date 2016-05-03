@@ -44,11 +44,9 @@
 
 - (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
                  failuerHandler:(HYRequestFinishedFailuerHandler)failerHandler
-                progressHandler:(HYRequestProgressHandler)progressHandler
 {
     self.successHandler = successHandler;
     self.failerHandler = failerHandler;
-    self.progressHandler = progressHandler;
     [self start];
 }
 
