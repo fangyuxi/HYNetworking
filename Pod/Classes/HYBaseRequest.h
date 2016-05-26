@@ -14,6 +14,8 @@
 #import "HYNetworkUrlFilterProtocol.h"
 #import "HYNetworkServer.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark block
 
 @class HYBaseRequest;
@@ -194,8 +196,8 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 - (void)start;
 
-- (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
-                 failuerHandler:(HYRequestFinishedFailuerHandler)failuerHandler;
+- (void)startWithSuccessHandler:(__nullable HYRequestFinishedSuccessHandler)successHandler
+                 failuerHandler:(__nullable HYRequestFinishedFailuerHandler)failuerHandler;
 
 - (void)cancel;
 - (BOOL)isLoading;
@@ -217,6 +219,8 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 @property (nonatomic, copy, readonly)NSString *URL;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 
 

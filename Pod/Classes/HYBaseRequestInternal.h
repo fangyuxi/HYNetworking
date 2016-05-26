@@ -11,6 +11,8 @@
 #import "HYBaseRequestPrivate.h"
 #import "HYNetworkConfig.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface HYBaseRequestInternal : NSObject
 {
     
@@ -28,3 +30,5 @@
 - (BOOL)isLoadingRequest:(HYBaseRequest *)request;
 
 @end
+
+NS_ASSUME_NONNULL_END
