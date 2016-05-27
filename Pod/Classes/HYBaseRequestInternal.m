@@ -305,7 +305,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         
-        for (id<HYNetworkUrlFilterProtocol>filter in filters)
+        for (id<HYNetworkParameterDecoratorProtocol>filter in filters)
         {
             if ([request requestMethod] == HYRequestMethodGet)
             {

@@ -26,8 +26,7 @@
                       @"appKey":@"76532",
                       @"loginTocken":@"7c7aa549e86a3ac29573a442fb0d7b13",
                       @"appVersion":@"10245",
-                      @"platform":@"ios",
-                      @"sign":@"A6B3AB44CBB0DC267E73ADD165F7AC9F8975BDD4"};
+                      @"platform":@"ios"};
         return self;
     }
     return nil;

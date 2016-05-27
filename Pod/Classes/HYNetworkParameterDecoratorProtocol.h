@@ -11,8 +11,9 @@
 @class HYBaseRequest;
 
 /** 参数filter **/
-
-@protocol HYNetworkUrlFilterProtocol <NSObject>
+//decorator
+//parameter
+@protocol HYNetworkParameterDecoratorProtocol <NSObject>
 
 @required
 - (NSString *)filterUrl:(NSString *)url withRequest:(HYBaseRequest *)request;

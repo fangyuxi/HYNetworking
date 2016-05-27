@@ -47,7 +47,7 @@
 
 #pragma mark filters
 
-- (void)addUrlFilter:(id<HYNetworkUrlFilterProtocol>)filter
+- (void)addUrlFilter:(id<HYNetworkParameterDecoratorProtocol>)filter
 {
     if (!filter)
     {

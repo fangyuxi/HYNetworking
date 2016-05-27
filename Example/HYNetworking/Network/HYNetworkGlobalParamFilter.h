@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HYNetworking.h"
 
-@interface HYNetworkGlobalParamFilter : NSObject<HYNetworkUrlFilterProtocol>
+@interface HYNetworkGlobalParamFilter : NSObject<HYNetworkParameterDecoratorProtocol>
 
 
 @end
