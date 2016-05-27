@@ -16,6 +16,7 @@
 
 @required
 - (NSString *)filterUrl:(NSString *)url withRequest:(HYBaseRequest *)request;
+- (NSDictionary *)paramDictionary;
 
 @end
 

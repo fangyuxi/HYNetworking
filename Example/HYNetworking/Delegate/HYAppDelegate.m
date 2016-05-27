@@ -35,6 +35,7 @@
 {
     HYNetworkConfig *config = [HYNetworkConfig sharedInstance];
     config.defaultSever = [[HYNetworkDefaultServer alloc] init];
+    config.headerLogOn = NO;
     config.defaultSever.online = YES;
     config.defaultSever.verify = NO;
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];

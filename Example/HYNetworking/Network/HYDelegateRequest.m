@@ -12,7 +12,7 @@
 
 - (HYRequestMethod)requestMethod
 {
-    return HYRequestMethodGet;
+    return HYRequestMethodPost;
 }
 
 - (NSString *)apiUrl

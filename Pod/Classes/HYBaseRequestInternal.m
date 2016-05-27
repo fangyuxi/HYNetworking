@@ -57,20 +57,34 @@ static HYBaseRequestInternal *sharedInstance = nil;
     HYRequestMethod method = [request requestMethod];
     
     NSAssert(method == HYRequestMethodGet ||
-             method == HYRequestMethodPost ||
-             method == HYRequestMethodHead ||
-             method == HYRequestMethodPut ||
-             method == HYRequestMethodDelete ||
-             method == HYRequestMethodPatch,@"Please Provide Legal Request Method");
+             method == HYRequestMethodPost
+             //method == HYRequestMethodHead ||
+             //method == HYRequestMethodPut ||
+             //method == HYRequestMethodDelete ||
+             //method == HYRequestMethodPatch
+             ,@"Please Provide Legal Request Method");
     
     //请求url
-    NSString *url = [self p_buildFullUrlWithRequest:request];
+    NSDictionary *filterParam = nil;
+    NSMutableDictionary *finalParam = [NSMutableDictionary dictionary];
+    
+    NSString *url = [self p_buildFullUrlWithRequest:request param:&filterParam];
+    
+    //参数
+    NSDictionary *argument = [request respondsToSelector:@selector(requestArgument)] ? [request requestArgument] : nil;
+    
+    if ([request requestMethod] == HYRequestMethodGet)
+    {
+         finalParam = [argument mutableCopy];
+    }
+    else
+    {
+        [finalParam addEntriesFromDictionary:filterParam];
+        [finalParam addEntriesFromDictionary:argument];
+    }
     
     //下载地址
     NSString *downloadPath = [request respondsToSelector:@selector(downloadPath)] ? [request downloadPath] : nil;
-    
-    //参数
-    id param = [request respondsToSelector:@selector(requestArgument)] ? [request requestArgument] : nil;
     
     //post body
     HYConstructingBlock constructingBlock = [request respondsToSelector:@selector(constructingBodyBlock)] ? [request constructingBodyBlock]: nil;
@@ -104,7 +118,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     
     //发送请求
     [self p_sendRequestWithUrl:url
-                         param:param
+                         param:finalParam
                         method:method
                        request:request
                   downloadPath:downloadPath
@@ -228,11 +242,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         request.task = task;
     }
     
-    /**
-     一边发送请求一边打印NSURLRequest 实例的时候会产生内部崩溃 故systemRequest暂时不传了
-     *  见 https://github.com/AFNetworking/AFNetworking/pull/843/commits/db305db733da040974c12f5fc6653db4388ac230
-     */
-    [[HYNetworkLogger sharedInstance] logRequest:request systemRequest:nil];
+    [[HYNetworkLogger sharedInstance] logRequest:request systemRequest:request.task.currentRequest];
 }
 
 - (void)cancelRequeset:(HYBaseRequest *)request
@@ -259,7 +269,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 #pragma mark build URL
 
-- (NSString *)p_buildFullUrlWithRequest:(HYBaseRequest *)request
+- (NSString *)p_buildFullUrlWithRequest:(HYBaseRequest *)request param:(NSDictionary **)dic
 {
     NSString *url = nil;
     if ([request respondsToSelector:@selector(fullUrl)] &&
@@ -272,7 +282,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
              [[request apiUrl] hasPrefix:@"https"])
     {
         url = [request apiUrl];
-        return url;
+        NSLog(@"apiUrl 只需要返回API路径，不允许存在host，host应该从server对象读取");
+        return @"";
     }
     
     url = [request apiUrl];
@@ -280,15 +291,29 @@ static HYBaseRequestInternal *sharedInstance = nil;
     //url filters
     if (request.urlFilter)
     {
-        url = [request.urlFilter filterUrl:url withRequest:request];
+        if ([request requestMethod] == HYRequestMethodGet)
+        {
+             url = [request.urlFilter filterUrl:url withRequest:request];
+        }
+       
+        *dic = [request.urlFilter paramDictionary];
     }
     else
     {
         NSArray *filters = [_networkConfig urlFilters];
+        
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        
         for (id<HYNetworkUrlFilterProtocol>filter in filters)
         {
-            url = [filter filterUrl:url withRequest:request];
+            if ([request requestMethod] == HYRequestMethodGet)
+            {
+                url = [filter filterUrl:url withRequest:request];
+            }
+            [param addEntriesFromDictionary:[filter paramDictionary]];
         }
+        
+        *dic = param;
     }
     
     NSString *baseUrl = nil;
@@ -306,6 +331,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     NSString *fullUrl = [NSString stringWithFormat:@"%@%@",baseUrl, url];
     return fullUrl;
 }
+
 
 #pragma mark handle request
 
@@ -405,16 +431,11 @@ static HYBaseRequestInternal *sharedInstance = nil;
                                           error:(NSError *)error;
 {
     NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse *)task.response;
-    NSURLRequest *urlRequest = task.currentRequest;
-    HYNetworkResponse *response = [[HYNetworkResponse alloc] initWithResponseRequestId:[request name]
-                                                                         systemReqeust:systemRequest
-                                                                             hyRequest:request
-                                                                           requestURL:[urlRequest.URL absoluteString]
-                                                                         responseData:data
-                                                                       HTTPHeadFields:urlResponse.allHeaderFields
-                                                                           statusCode:urlResponse.statusCode
-                                                                               status:status
-                                                                                error:error];
+    HYNetworkResponse *response = [[HYNetworkResponse alloc] initWithResponse:urlResponse
+                                                                    hyRequest:request
+                                                                 responseData:data
+                                                                       status:status
+                                                                        error:error];
     return response;
 }
 

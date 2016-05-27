@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    for (NSInteger index = 0; index < 100; ++index)
+    for (NSInteger index = 0; index < 1000; ++index)
     {
         HYSimpleRequest *request = [[HYSimpleRequest alloc] init];
         request.simpleRequestMethod = HYRequestMethodGet;
@@ -38,29 +38,30 @@
             
         } failuerHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
             
-        } progressHandler:^(HYBaseRequest *request, int64_t progress) {
-            
         }];
         
         [request start];
     }
     
+    HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
+    request.delegate = self;
+    [request start];
     
     
     //self.dispatchGroup = dispatch_group_create();
-    for (NSInteger index = 0; index < 100; ++index)
-    {
-        
-        
-        //dispatch_group_enter(self.dispatchGroup);
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
-            request.delegate = self;
-            [request start];
-        });
-    }
+//    for (NSInteger index = 0; index < 100; ++index)
+//    {
+//        
+//        
+//        //dispatch_group_enter(self.dispatchGroup);
+//        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//            
+//            HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
+//            request.delegate = self;
+//            [request start];
+//        });
+//    }
     
 //    dispatch_group_notify(self.dispatchGroup, dispatch_get_main_queue(), ^(){
 //    

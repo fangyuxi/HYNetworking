@@ -42,14 +42,9 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
 @property (nonatomic, strong, readwrite)NSError *error;
 @property (nonatomic, copy, readwrite)NSString *errorMSG;
 
-@property (nonatomic, assign, readwrite)NSTimeInterval maxAge;
-@property (nonatomic, copy, readwrite)NSDate *cacheDate;
-
 @end
 
 @implementation HYNetworkResponse
-
-@synthesize maxAge = _maxAge;
 
 - (void)dealloc
 {
@@ -59,16 +54,7 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
 - (instancetype) init
 {
     NSLog(@"Use \"initWithResponse to create");
-    
-    return [self initWithResponseRequestId:nil
-                             systemReqeust:nil
-                                 hyRequest:nil
-                                requestURL:nil
-                              responseData:nil
-                            HTTPHeadFields:nil
-                                statusCode:0
-                                    status:0
-                                     error:nil];
+    return nil;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -78,7 +64,6 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
     {
         NSString *identifier = [aDecoder decodeObjectForKey:HYResponseRequestIdentifierKey];
         _requestIdentifier = identifier ? identifier : @"";
-        _systemRequest = [aDecoder decodeObjectForKey:HYResponseNSRequestKey];
         
         NSString *url = [aDecoder decodeObjectForKey:HYResponseRequestURLKey];
         _requestURL = url ? url : @"";
@@ -86,8 +71,6 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
         _responseHTTPHeadFields = [aDecoder decodeObjectForKey:HYResponseHTTPHeadFieldsKey];
         _responseHTTPStatusCode = [[aDecoder decodeObjectForKey:HYResponseHTTPStatusCodeKey] integerValue];
         _status = [[aDecoder decodeObjectForKey:HYResponseStatusKey] integerValue];
-        _cacheDate = [aDecoder decodeObjectForKey:HYResponseCacheDate];
-        _maxAge = [[aDecoder decodeObjectForKey:HYResponseCacheMaxAge] doubleValue];
         
         return self;
     }
@@ -97,45 +80,34 @@ static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge"
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.requestIdentifier forKey:HYResponseRequestIdentifierKey];
-    self.systemRequest ? [aCoder encodeObject:self.systemRequest forKey:HYResponseNSRequestKey] : nil;
     self.requestURL ? [aCoder encodeObject:self.requestURL forKey:HYResponseRequestURLKey] :nil;
     self.content ? [aCoder encodeObject:self.content forKey:HYResponseContentKey] :nil;
     self.responseHTTPHeadFields ? [aCoder encodeObject:self.responseHTTPHeadFields
                                                 forKey:HYResponseHTTPHeadFieldsKey] :nil;
     [aCoder encodeObject:@(self.responseHTTPStatusCode) forKey:HYResponseHTTPStatusCodeKey];
     [aCoder encodeObject:@(self.status) forKey:HYResponseStatusKey];
-    [aCoder encodeObject:self.cacheDate forKey:HYResponseCacheDate];
-    [aCoder encodeObject:[NSNumber numberWithDouble:self.maxAge] forKey:HYResponseCacheDate];
 }
 
-- (instancetype)initWithResponseRequestId:(NSString *)requestIdentifier
-                            systemReqeust:(NSURLRequest *)systemRequest
-                                hyRequest:(HYBaseRequest *)hyRequest
-                               requestURL:(NSString *)requestURL
-                             responseData:(id)content
-                           HTTPHeadFields:(NSDictionary *)responseHTTPHeadFields
-                               statusCode:(NSInteger)statusCode
-                                   status:(HYResponseStatus)status
-                                    error:(NSError *)error
+- (instancetype)initWithResponse:(NSHTTPURLResponse *)systemResponse
+                       hyRequest:(HYBaseRequest *)hyRequest
+                    responseData:(id)content
+                          status:(HYResponseStatus)status
+                           error:(NSError *)error
 {
     self = [super init];
     if (self)
     {
-        _cacheDate = [NSDate new];
-        _maxAge = [hyRequest cacheMaxAge];
         _status = status;
         _fromCache = NO;
         
-        _requestIdentifier = [requestIdentifier copy];
-        _requestURL = [requestURL copy];
+        _requestIdentifier = [[hyRequest name] copy];
+        _requestURL = [[hyRequest URL] copy];
         _content = content;
         
-        _responseHTTPHeadFields = responseHTTPHeadFields;
-        _responseHTTPStatusCode = statusCode;
+        _responseHTTPHeadFields = [systemResponse allHeaderFields];
+        _responseHTTPStatusCode = [systemResponse statusCode];
         
         self.error = error;
-        
-        _systemRequest = systemRequest;
         _hyRequest = hyRequest;
         
         return self;

@@ -19,8 +19,6 @@
 
 + (HYNetworkConfig *)sharedInstance; 
 
-//baseUrl读的就是defaultServer中的baseUrl
-@property (nonatomic, copy, readonly) NSString *baseUrl;
 //默认的服务提供商
 @property (nonatomic, strong) HYNetworkServer *defaultSever;
 

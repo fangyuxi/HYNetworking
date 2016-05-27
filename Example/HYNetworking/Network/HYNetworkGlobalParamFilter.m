@@ -39,6 +39,9 @@
 }
 
 
-
+- (NSDictionary *)paramDictionary
+{
+    return _paramDic;
+}
 
 @end

@@ -123,7 +123,7 @@
     return nil ;
 }
 
-//完整的url 如果有值，那么会忽略掉HYNetworkConfig里面的baseUrl
+//完整的url 如果有值，那么会忽略掉HYNetworkConfig里面的DefaultServer中的baseUrl
 - (NSString *)fullUrl
 {
     return nil;

@@ -53,6 +53,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 /**
  *  完整的url 如果有值，那么会忽略掉HYNetworkConfig里面的baseUrl，也会忽略掉自身的server
+    一般为调试用，如果有request实现了fullUrl 请造一个警告
  *
  *  @return url string
  */
@@ -163,18 +164,18 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 }
 
 
-@property (nonatomic, weak) id<HYRequestDelegate> delegate;
+@property (nonatomic, weak) __nullable id<HYRequestDelegate> delegate;
 
 /**
  *  通常是自己，如果多个接口validator可以重用，也可以单独定义对象
  */
-@property (nonatomic, weak) id<HYRequestValidator> validator;
+@property (nonatomic, weak) __nullable id<HYRequestValidator> validator;
 /**
  *  服务提供者，如果不提供，那么使用config的默认提供者
  */
-@property (nonatomic, strong) HYNetworkServer *server;
+@property (nonatomic, strong) HYNetworkServer * __nullable server;
 
-@property (nonatomic, strong) NSDictionary *userInfo;
+@property (nonatomic, strong) NSDictionary * __nullable userInfo;
 
 /**
  *  debug 此request是否打印log 如果为true 那么不论全局log是否打印，这个request都打印
@@ -189,9 +190,9 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 @property (nonatomic, strong) id<HYNetworkUrlFilterProtocol> urlFilter;
 @property (nonatomic, strong) id<HYNetworkResponseFilterProtocol> responseFilter;
 
-@property (nonatomic, copy) HYRequestFinishedSuccessHandler successHandler;
-@property (nonatomic, copy) HYRequestFinishedFailuerHandler failerHandler;
-@property (nonatomic, copy) HYRequestProgressHandler progressHandler;
+@property (nonatomic, copy) __nullable HYRequestFinishedSuccessHandler successHandler;
+@property (nonatomic, copy) __nullable HYRequestFinishedFailuerHandler failerHandler;
+@property (nonatomic, copy) __nullable HYRequestProgressHandler progressHandler;
 
 
 - (void)start;

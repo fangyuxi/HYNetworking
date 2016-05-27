@@ -20,4 +20,9 @@
     return [HYTools urlStringWithOriginUrlString:url appendParameters:_signDic];
 }
 
+- (NSDictionary *)paramDictionary
+{
+    return _signDic;
+}
+
 @end

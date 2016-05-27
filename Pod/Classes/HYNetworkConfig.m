@@ -45,14 +45,6 @@
     return self;
 }
 
-#pragma mark base url
-
-- (NSString *)baseUrl
-{
-    NSAssert(self.defaultSever, @"/////没有默认的服务器//////////");
-    return [self.defaultSever baseUrl];
-}
-
 #pragma mark filters
 
 - (void)addUrlFilter:(id<HYNetworkUrlFilterProtocol>)filter

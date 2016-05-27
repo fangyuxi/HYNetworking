@@ -41,7 +41,6 @@ typedef NS_ENUM(NSInteger , HYResponseStatus)
 @property (nonatomic, copy, readonly)NSString *errorMSG;
 
 //系统的NSURLResponse 方便调试
-@property (nonatomic, strong, readonly)NSURLRequest *systemRequest;
 @property (nonatomic, strong, readonly)HYBaseRequest *hyRequest;
 
 //请求的相关属性
@@ -52,15 +51,11 @@ typedef NS_ENUM(NSInteger , HYResponseStatus)
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
-- (instancetype)initWithResponseRequestId:(NSString *)requestIdentifier
-                            systemReqeust:(NSURLRequest *)systemRequest
-                                hyRequest:(HYBaseRequest *)hyRequest
-                               requestURL:(NSString *)requestURL
-                             responseData:(id)content
-                           HTTPHeadFields:(NSDictionary *)responseHTTPHeadFields
-                               statusCode:(NSInteger)statusCode
-                                   status:(HYResponseStatus)status
-                                    error:(NSError *)error NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResponse:(NSHTTPURLResponse *)systemResponse
+                                    hyRequest:(HYBaseRequest *)hyRequest
+                                 responseData:(id)content
+                                       status:(HYResponseStatus)status
+                                        error:(NSError *)error NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
