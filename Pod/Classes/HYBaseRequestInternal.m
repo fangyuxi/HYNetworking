@@ -115,6 +115,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         }
     }
     
+    request.allParam = finalParam;
     
     //发送请求
     [self p_sendRequestWithUrl:url

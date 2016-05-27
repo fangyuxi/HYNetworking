@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSURLSessionTask *task;
 @property (nonatomic, copy, readwrite)NSString *URL;
+@property (nonatomic, strong) NSDictionary *allParam;
 
 - (void)clearBlock;
 

@@ -26,22 +26,22 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    for (NSInteger index = 0; index < 1000; ++index)
-    {
-        HYSimpleRequest *request = [[HYSimpleRequest alloc] init];
-        request.simpleRequestMethod = HYRequestMethodGet;
-        request.simpleApiUrl = @"/api/system?method=initApp";
-        request.simpleName = @"fangyuxi";
-        
-        [request startWithSuccessHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
-            
-            
-        } failuerHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
-            
-        }];
-        
-        [request start];
-    }
+//    for (NSInteger index = 0; index < 1; ++index)
+//    {
+//        HYSimpleRequest *request = [[HYSimpleRequest alloc] init];
+//        request.simpleRequestMethod = HYRequestMethodGet;
+//        request.simpleApiUrl = @"/api/system?method=initApp";
+//        request.simpleName = @"fangyuxi";
+//        
+//        [request startWithSuccessHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
+//            
+//            
+//        } failuerHandler:^(HYBaseRequest *request, HYNetworkResponse *response) {
+//            
+//        }];
+//        
+//        [request start];
+//    }
     
     HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
     request.delegate = self;

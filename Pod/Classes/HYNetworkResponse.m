@@ -18,10 +18,7 @@ static NSString *const HYResponseRequestURLKey        = @"HYResponseRequestURLKe
 static NSString *const HYResponseRequestIdentifierKey = @"HYResponseRequestIdentifierKey";
 static NSString *const HYResponseErrorKey             = @"HYResponseErrorKey";
 static NSString *const HYResponseErrorMSGKey          = @"HYResponseErrorMSGKey";
-static NSString *const HYResponseNSRequestKey         = @"HYResponseNSRequestKey";
 static NSString *const HYResponseHYRequestKey         = @"HYResponseHYRequestKey";
-static NSString *const HYResponseCacheDate            = @"HYResponseCacheDate";
-static NSString *const HYResponseCacheMaxAge          = @"HYResponseCacheMaxAge";
 
 @interface HYNetworkResponse ()
 {

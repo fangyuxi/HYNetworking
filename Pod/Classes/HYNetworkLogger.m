@@ -11,6 +11,7 @@
 #import "HYNetworkServer.h"
 #import "HYBaseRequest.h"
 #import "HYNetworkConfig.h"
+#import "HYBaseRequestPrivate.h"
 
 @implementation HYNetworkLogger
 
@@ -38,7 +39,7 @@
         }
         
         //头
-        NSMutableString *log = [NSMutableString stringWithFormat:@"\n==============================================================\n               Response  status:%ld  code:%ld           \n==============================================================\n\n",(long)response.status, (long)response.responseHTTPStatusCode];
+        NSMutableString *log = [NSMutableString stringWithFormat:@"\n==================================================================================\n               Response  status:%@  code:%ld           \n==================================================================================\n\n",[self statusStringOfCode:response.status], (long)response.responseHTTPStatusCode];
         
         //返回的内容
         if ([HYNetworkConfig sharedInstance].headerLogOn)
@@ -76,13 +77,13 @@
         
         //request的参数
         [log appendString:@"Request param \n"];
-        [log appendString:[self jsonStringWithObject:[request requestArgument]]];
+        [log appendString:[self jsonStringWithObject:[request allParam]]];
         [log appendString:@"\n\n"];
         [log appendString:@"Request URL \n"];
         [log appendString:response.requestURL ? response.requestURL : @"url丢失"];
         [log appendString:@"\n\n---------------  Related Request End  --------------\n"];
         
-        [log appendString:@"\n=============================================================\n                            Response End           \n==============================================================\n\n"];
+        [log appendString:@"\n==================================================================================\n                            Response End           \n==================================================================================\n\n"];
         NSLog(@"%@",log);
     });
 }
@@ -111,7 +112,7 @@
         }
         
         //头
-        NSMutableString *log = [NSMutableString stringWithFormat:@"\n==============================================================\n                      Request Start            \n==============================================================\n\n"];
+        NSMutableString *log = [NSMutableString stringWithFormat:@"\n==================================================================================\n                      Request Start            \n==================================================================================\n\n"];
         
         //request信息
         if ([HYNetworkConfig sharedInstance].headerLogOn)
@@ -123,16 +124,47 @@
         
         //request的参数
         [log appendString:@"Request param \n"];
-        [log appendString:[self jsonStringWithObject:[request requestArgument]]];
+        [log appendString:[self jsonStringWithObject:[request allParam]]];
         [log appendString:@"\n\n"];
         [log appendString:@"Request URL \n"];
         [log appendString:request.URL ? request.URL : @"url丢失"];
         [log appendString:@"\n"];
         
-        [log appendString:@"\n=============================================================\n                        Reqeust End           \n==============================================================\n\n"];
+        [log appendString:@"\n==================================================================================\n                        Reqeust End           \n==================================================================================\n\n"];
         
         NSLog(@"%@",log);
     });
+}
+
+- (NSString *)statusStringOfCode:(NSInteger)code
+{
+    switch (code) {
+        case HYResponseStatusDefault:
+            return @"HYResponseStatusDefault";
+            break;
+        case HYResponseStatusSuccess:
+            return @"HYResponseStatusSuccess";
+            break;
+        case HYResponseStatusSuccessWithoutValidator:
+            return @"HYResponseStatusSuccessWithoutValidator";
+            break;
+        case HYResponseStatusConnectionFailed:
+            return @"HYResponseStatusConnectionFailed";
+            break;
+        case HYResponseStatusCanceled:
+            return @"HYResponseStatusCanceled";
+            break;
+        case HYResponseStatusFailed:
+            return @"HYResponseStatusFailed";
+            break;
+        case HYResponseStatusValidatorFailed:
+            return @"HYResponseStatusValidatorFailed";
+            break;
+            
+        default:
+            break;
+    }
+    return @"Unkown";
 }
 
 @end
