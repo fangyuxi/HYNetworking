@@ -25,9 +25,9 @@
     if (self)
     {
         NSAssert([self conformsToProtocol:@protocol(HYBaseRequestProtocol)], @"Your Must ConformToProtocol : HYBaseRequestProtocol");
-        
+
         self.validator = (id <HYRequestValidator>)self;
-        
+
         return self;
     }
     return nil;
@@ -89,12 +89,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:[HYBaseRequest class]])
     {
         return NO;
     }
-    
+
     return [self isEqualToRequest:(HYBaseRequest *) object];
 }
 
@@ -181,6 +181,3 @@
 
 
 @end
-
-
-

@@ -11,13 +11,20 @@
 @class HYBaseRequest;
 
 /** 参数filter **/
-//decorator
-//parameter
+
 @protocol HYNetworkParameterDecoratorProtocol <NSObject>
 
 @required
-- (NSString *)filterUrl:(NSString *)url withRequest:(HYBaseRequest *)request;
-- (NSDictionary *)paramDictionary;
+
+// in
+@property (nonatomic, copy)NSString *inUrl;
+@property (nonatomic, strong)HYBaseRequest *request;
+
+// out
+@property (nonatomic, copy, readonly)NSString *outUrl;
+@property (nonatomic, strong, readonly)NSDictionary *parameterDic;
+
+- (NSString *)decorate;
 
 @end
 

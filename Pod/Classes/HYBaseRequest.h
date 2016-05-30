@@ -138,7 +138,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 #pragma mark Validator Protocol
 
 /**
- *  验证返回值和参数 可以指向自己 
+ *  验证返回值和参数 可以指向自己
     如果多个request可以共享一个validator，那么可以单独写一个对象
  */
 @protocol HYRequestValidator <NSObject>
@@ -159,8 +159,8 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 @interface HYBaseRequest : NSObject <HYBaseRequestProtocol>
 {
-    
-    
+
+
 }
 
 
@@ -222,14 +222,3 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 @end
 
 NS_ASSUME_NONNULL_END
-
-
-
-
-
-
-
-
-
-
-
