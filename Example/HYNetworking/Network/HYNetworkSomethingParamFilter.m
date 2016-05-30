@@ -1,18 +1,18 @@
 //
-//  HYNetworkGlobalParamFilter.m
-//  MyFirst
+//  HYNetworkSomethingParamFilter.m
+//  HYNetworking
 //
-//  Created by fangyuxi on 16/3/12.
+//  Created by fangyuxi on 16/5/30.
 //  Copyright © 2016年 fangyuxi. All rights reserved.
 //
 
-#import "HYNetworkGlobalParamFilter.h"
+#import "HYNetworkSomethingParamFilter.h"
 #import "HYTools.h"
 
-@implementation HYNetworkGlobalParamFilter{
-
+@implementation HYNetworkSomethingParamFilter{
+    
     NSDictionary *_paramDic;
-
+    
 }
 
 @synthesize outUrl = _outUrl;
@@ -26,13 +26,8 @@
     self = [super init];
     if (self)
     {
-        _paramDic = @{@"v":@"1.0",
-                      @"categoryListVersion":@"1",
-                      @"currentVersion":@"10245",
-                      @"appKey":@"76532",
-                      @"loginTocken":@"7c7aa549e86a3ac29573a442fb0d7b13",
-                      @"appVersion":@"10245",
-                      @"platform":@"ios"};
+        _paramDic = @{@"s":@"a",
+                      @"s2":@"1"};
         return self;
     }
     return nil;
@@ -58,9 +53,5 @@
     return _paramDic;
 }
 
+
 @end
-
-
-
-
-

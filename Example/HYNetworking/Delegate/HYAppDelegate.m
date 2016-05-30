@@ -13,7 +13,7 @@
 #import "HYNetworkGlobalParamFilter.h"
 #import "HYNetworkGlobalResponseFilter.h"
 #import "HYNetworkSignatureUrlFilter.h"
-
+#import "HYNetworkSomethingParamFilter.h"
 
 @implementation HYAppDelegate
 
@@ -41,7 +41,8 @@
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     
     [config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
-    
+    [config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
+    [config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];
     
     
     [config addResponseFilter:[[HYNetworkGlobalResponseFilter alloc] init]];

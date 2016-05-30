@@ -18,13 +18,14 @@
 
 // in
 @property (nonatomic, copy)NSString *inUrl;
-@property (nonatomic, strong)HYBaseRequest *request;
+@property (nonatomic, strong)NSDictionary *inParameterDic;
+@property (nonatomic, strong)HYBaseRequest *inRequest;
 
 // out
 @property (nonatomic, copy, readonly)NSString *outUrl;
-@property (nonatomic, strong, readonly)NSDictionary *parameterDic;
+@property (nonatomic, strong, readonly)NSDictionary *outParameterDic;
 
-- (NSString *)decorate;
+//- (NSString *)decorate;
 
 @end
 

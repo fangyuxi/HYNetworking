@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C73A188050C688F2A595E25 /* libPods-HYNetworking_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE0AB513FAEF8B8184E6693 /* libPods-HYNetworking_Example.a */; };
+		1E2603611CFC187E00A1009E /* HYNetworkSomethingParamFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2603601CFC187E00A1009E /* HYNetworkSomethingParamFilter.m */; };
 		1EC3D75A1CD8368E0029930A /* HYTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC3D7591CD8368E0029930A /* HYTools.m */; };
 		1EEB9B9D1CA3EE7F008A8411 /* HYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB9B971CA3EE7F008A8411 /* HYViewController.m */; };
 		1EEB9B9E1CA3EE7F008A8411 /* HYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB9B9A1CA3EE7F008A8411 /* HYAppDelegate.m */; };
@@ -40,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E26035F1CFC187E00A1009E /* HYNetworkSomethingParamFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYNetworkSomethingParamFilter.h; sourceTree = "<group>"; };
+		1E2603601CFC187E00A1009E /* HYNetworkSomethingParamFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYNetworkSomethingParamFilter.m; sourceTree = "<group>"; };
 		1EC3D7581CD8368E0029930A /* HYTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTools.h; sourceTree = "<group>"; };
 		1EC3D7591CD8368E0029930A /* HYTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTools.m; sourceTree = "<group>"; };
 		1EEB9B961CA3EE7F008A8411 /* HYViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYViewController.h; sourceTree = "<group>"; };
@@ -138,10 +141,12 @@
 				1EEB9BA01CA3EF2D008A8411 /* HYNetworkDefaultServer.m */,
 				1EEB9BA11CA3EF2D008A8411 /* HYNetworkGlobalParamFilter.h */,
 				1EEB9BA21CA3EF2D008A8411 /* HYNetworkGlobalParamFilter.m */,
-				1EEB9BA31CA3EF2D008A8411 /* HYNetworkGlobalResponseFilter.h */,
-				1EEB9BA41CA3EF2D008A8411 /* HYNetworkGlobalResponseFilter.m */,
 				1EEB9BA51CA3EF2D008A8411 /* HYNetworkSignatureUrlFilter.h */,
 				1EEB9BA61CA3EF2D008A8411 /* HYNetworkSignatureUrlFilter.m */,
+				1E26035F1CFC187E00A1009E /* HYNetworkSomethingParamFilter.h */,
+				1E2603601CFC187E00A1009E /* HYNetworkSomethingParamFilter.m */,
+				1EEB9BA31CA3EF2D008A8411 /* HYNetworkGlobalResponseFilter.h */,
+				1EEB9BA41CA3EF2D008A8411 /* HYNetworkGlobalResponseFilter.m */,
 				1EC3D7581CD8368E0029930A /* HYTools.h */,
 				1EC3D7591CD8368E0029930A /* HYTools.m */,
 			);
@@ -403,6 +408,7 @@
 				1EEB9BA91CA3EF2D008A8411 /* HYNetworkGlobalResponseFilter.m in Sources */,
 				1EC3D75A1CD8368E0029930A /* HYTools.m in Sources */,
 				1EEB9BA71CA3EF2D008A8411 /* HYNetworkDefaultServer.m in Sources */,
+				1E2603611CFC187E00A1009E /* HYNetworkSomethingParamFilter.m in Sources */,
 				1EEB9B9D1CA3EE7F008A8411 /* HYViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

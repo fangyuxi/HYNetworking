@@ -292,28 +292,36 @@ static HYBaseRequestInternal *sharedInstance = nil;
     //url filters
     if (request.urlFilter)
     {
-        if ([request requestMethod] == HYRequestMethodGet)
-        {
-             url = [request.urlFilter filterUrl:url withRequest:request];
+        request.urlFilter.inUrl = url;
+        request.urlFilter.inRequest = request;
+        request.urlFilter.inParameterDic = nil;
+        *dic = [request.urlFilter outParameterDic];
+        
+        if (request.requestMethod == HYRequestMethodGet) {
+            
+            url = request.urlFilter.outUrl;
         }
-       
-        *dic = [request.urlFilter paramDictionary];
     }
     else
     {
         NSArray *filters = [_networkConfig urlFilters];
         
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
-        
+        NSDictionary *outParam = nil;
         for (id<HYNetworkParameterDecoratorProtocol>filter in filters)
         {
-            if ([request requestMethod] == HYRequestMethodGet)
-            {
-                url = [filter filterUrl:url withRequest:request];
+            filter.inUrl = url;
+            filter.inRequest = request;
+            filter.inParameterDic = outParam;
+            
+            outParam = [filter outParameterDic];
+            [param addEntriesFromDictionary:[filter outParameterDic]];
+            
+            if (request.requestMethod == HYRequestMethodGet) {
+                
+                url = filter.outUrl;
             }
-            [param addEntriesFromDictionary:[filter paramDictionary]];
         }
-        
         *dic = param;
     }
     

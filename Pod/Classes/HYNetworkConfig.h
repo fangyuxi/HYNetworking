@@ -32,7 +32,7 @@
 //所有Reqeust使用的缓存
 //@property (nonatomic, strong) HYResponseCache *cache;
 
-- (void)addUrlFilter:(id<HYNetworkResponseFilterProtocol>)filter;
+- (void)addUrlFilter:(id<HYNetworkParameterDecoratorProtocol>)filter;
 - (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter;
 
 

@@ -17,15 +17,52 @@
 
 }
 
-- (NSString *)filterUrl:(NSString *)url withRequest:(HYBaseRequest *)request
+@synthesize outUrl = _outUrl;
+@synthesize inUrl = _inUrl;
+@synthesize inRequest = _inRequest;
+@synthesize outParameterDic = _outParameterDic;
+@synthesize inParameterDic = _inParameterDic;
+
+- (NSString *)outUrl
 {
-    _paramURL = [url copy];
-    return [HYTools urlStringWithOriginUrlString:url appendParameters:[self paramDictionary]];
+    return [HYTools urlStringWithOriginUrlString:self.inUrl appendParameters:[self outParameterDic]];
 }
 
-- (NSDictionary *)paramDictionary
+- (NSDictionary *)outParameterDic
 {
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic addEntriesFromDictionary:[self.inRequest requestArgument]];
+
+    NSString *query = [NSURL URLWithString:self.inUrl].query;
+    if (query)
+    {
+        NSArray *parameters = [query componentsSeparatedByString:@"&"];
+        dic = [self dicConvertByArray:parameters];
+    }
+    
+    if ([self.inRequest requestMethod] == HYRequestMethodPost)
+    {
+        [dic addEntriesFromDictionary:self.inParameterDic];
+    }
+    
+    [dic addEntriesFromDictionary:[self.inRequest requestArgument]];
+    
+    NSString *sign = [self makeSign:dic];
+    if (sign)
+    {
+        _signDic = @{@"sign":sign};
+    }
     return _signDic;
+}
+
+- (void)setInParameterDic:(NSDictionary *)inParameterDic
+{
+    _inParameterDic = inParameterDic;
+}
+
+- (NSDictionary *)inParameterDic
+{
+    return _inParameterDic;
 }
 
 - (NSString *)makeSign:(NSDictionary *)dic
@@ -35,16 +72,16 @@
     return [signedString uppercaseString];
 }
 
-- (NSDictionary *)dicConvertByArray:(NSArray *)array
+- (NSMutableDictionary *)dicConvertByArray:(NSArray *)array
 {
     if (!array)
     {
         return  nil;
     }
-    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray * temArray = [( NSString *)obj componentsSeparatedByString:@"="];
-        [dic setObject:temArray[0] forKey:temArray[1]];
+        NSArray *temArray = [( NSString *)obj componentsSeparatedByString:@"="];
+        [dic setObject:temArray[1] forKey:temArray[0]];
     }];
     return dic;
 }
