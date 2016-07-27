@@ -51,8 +51,34 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 #pragma mark send cancel
 
+- (void)sendBatchRequest:(HYBatchRequests *)requests
+{
+    dispatch_group_t completeGroup = dispatch_group_create();
+    [requests.requests enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
+       
+        [[HYBaseRequestInternal sharedInstance] sendRequest:obj withCompleteGroup:completeGroup];
+        
+    }];
+    
+    dispatch_group_notify(completeGroup, dispatch_get_main_queue(), ^{
+       
+        if (requests.delegate) {
+            [requests.delegate batchAPIRequestsDidFinished:requests];
+        }
+    });
+}
+
 - (void)sendRequest:(HYBaseRequest *)request
 {
+    [self sendRequest:request withCompleteGroup:nil];
+}
+
+- (void)sendRequest:(HYBaseRequest *)request
+  withCompleteGroup:(nullable dispatch_group_t)completeGroup
+{
+    if (completeGroup) {
+        dispatch_group_enter(completeGroup);
+    }
     //请求方法
     HYRequestMethod method = [request requestMethod];
     
@@ -123,7 +149,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
                         method:method
                        request:request
                   downloadPath:downloadPath
-             constructingBlock:constructingBlock];
+             constructingBlock:constructingBlock
+     completeGroup:completeGroup];
 }
 
 - (void)p_sendRequestWithUrl:(NSString *)url
@@ -132,6 +159,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
                      request:(HYBaseRequest *)request
                 downloadPath:(NSString *)downloadPath
          constructingBlock:(HYConstructingBlock)constructingBlock
+               completeGroup:(nullable dispatch_group_t)completeGroup
 {
     __weak typeof(self) weakSelf = self;
     
@@ -141,6 +169,10 @@ static HYBaseRequestInternal *sharedInstance = nil;
     {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf p_handleSuccessWithResponse:responseObject andRequest:request];
+        
+        if (completeGroup) {
+            dispatch_group_leave(completeGroup);
+        }
     };
     
     void (^failureBlock)(NSURLSessionDataTask * task, NSError * error)
@@ -148,6 +180,10 @@ static HYBaseRequestInternal *sharedInstance = nil;
     {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf p_handleFailureWithError:error andRequest:request];
+        
+        if (completeGroup) {
+            dispatch_group_leave(completeGroup);
+        }
     };
     
     void (^progressBlock)(NSProgress *progress)
@@ -290,21 +326,21 @@ static HYBaseRequestInternal *sharedInstance = nil;
     url = [request apiUrl];
     
     //url filters
-    if (request.urlFilter)
+    if (request.urlDecorator)
     {
-        request.urlFilter.inUrl = url;
-        request.urlFilter.inRequest = request;
-        request.urlFilter.inParameterDic = nil;
-        *dic = [request.urlFilter outParameterDic];
+        request.urlDecorator.inUrl = url;
+        request.urlDecorator.inRequest = request;
+        request.urlDecorator.inParameterDic = nil;
+        *dic = [request.urlDecorator outParameterDic];
         
         if (request.requestMethod == HYRequestMethodGet) {
             
-            url = request.urlFilter.outUrl;
+            url = request.urlDecorator.outUrl;
         }
     }
     else
     {
-        NSArray *filters = [_networkConfig urlFilters];
+        NSArray *filters = [_networkConfig urlDecorators];
         
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         NSDictionary *outParam = nil;

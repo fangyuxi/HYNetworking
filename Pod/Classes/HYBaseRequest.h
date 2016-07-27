@@ -187,7 +187,7 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  *  参数和返回值过滤器，如果没有赋值，那么默认使用HYNetworkConfig里面的过滤器
     如果有赋值，会忽略掉config
  */
-@property (nonatomic, strong) id<HYNetworkParameterDecoratorProtocol> urlFilter;
+@property (nonatomic, strong) id<HYNetworkParameterDecoratorProtocol> urlDecorator;
 @property (nonatomic, strong) id<HYNetworkResponseFilterProtocol> responseFilter;
 
 @property (nonatomic, copy) __nullable HYRequestFinishedSuccessHandler successHandler;

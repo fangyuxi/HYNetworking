@@ -23,7 +23,7 @@
 @property (nonatomic, strong) HYNetworkServer *defaultSever;
 
 //用于向url添加参数的filter，比如签名，就可以设计成一个filter，公共参数，也可以设计成一个filter 组成 filter chain
-@property (nonatomic, strong, readonly) NSArray<id<HYNetworkResponseFilterProtocol>> *urlFilters;
+@property (nonatomic, strong, readonly) NSArray<id<HYNetworkParameterDecoratorProtocol>> *urlDecorators;
 //用于向已经验证完毕的response过滤错误
 @property (nonatomic, strong, readonly) NSArray<id<HYNetworkResponseFilterProtocol>> *responseFilters;
 

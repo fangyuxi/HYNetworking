@@ -10,6 +10,7 @@
 #import "HYBaseRequest.h"
 #import "HYBaseRequestPrivate.h"
 #import "HYNetworkConfig.h"
+#import "HYBatchRequests.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) HYNetworkConfig *networkConfig;
 
+- (void)sendRequest:(HYBaseRequest *)request
+  withCompleteGroup:(nullable dispatch_group_t)completeGroup;
+
 - (void)sendRequest:(HYBaseRequest *)request;
+- (void)sendBatchRequest:(HYBatchRequests *)requests;
 - (void)cancelRequeset:(HYBaseRequest *)request;
 - (void)cancelAllRequest;
 
