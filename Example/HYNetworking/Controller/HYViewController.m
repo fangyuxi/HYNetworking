@@ -10,7 +10,7 @@
 #import "HYNetworking.h"
 #import "HYDelegateRequest.h"
 
-@interface HYViewController ()<HYRequestDelegate>
+@interface HYViewController ()<HYRequestDelegate,HYBatchRequestsDelegate>
 {
     
 }
@@ -43,10 +43,31 @@
 //        [request start];
 //    }
     
-    HYDelegateRequest *request = [[HYDelegateRequest alloc] init];
-    request.delegate = self;
-    [request start];
+    HYDelegateRequest *request1 = [[HYDelegateRequest alloc] init];
+    request1.delegate = self;
+    [request1 start];
     
+//    HYDelegateRequest *request2 = [[HYDelegateRequest alloc] init];
+//    request2.delegate = self;
+//    
+//    HYDelegateRequest *request3 = [[HYDelegateRequest alloc] init];
+//    request3.delegate = self;
+//    
+//    HYDelegateRequest *request4 = [[HYDelegateRequest alloc] init];
+//    request4.delegate = self;
+//    
+//    HYDelegateRequest *request5 = [[HYDelegateRequest alloc] init];
+//    request5.delegate = self;
+//    
+//    HYBatchRequests *batch = [HYBatchRequests new];
+//    batch.delegate = self;
+//    [batch addRequest:request1];
+//    [batch addRequest:request2];
+//    [batch addRequest:request3];
+//    [batch addRequest:request4];
+//    [batch addRequest:request5];
+//    
+//    [batch start];
     
     //self.dispatchGroup = dispatch_group_create();
 //    for (NSInteger index = 0; index < 100; ++index)
@@ -73,6 +94,11 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)batchAPIRequestsDidFinished:(HYBatchRequests *)batchApis
+{
+    
 }
 
 - (void)requestDidFinished:(HYBaseRequest *)request

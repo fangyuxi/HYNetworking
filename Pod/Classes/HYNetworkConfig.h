@@ -11,6 +11,7 @@
 #import "HYNetworkSecurityPolicy.h"
 #import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkServer.h"
+#import "HYResponseCache.h"
 
 @interface HYNetworkConfig : NSObject
 {
@@ -19,7 +20,7 @@
 
 + (HYNetworkConfig *)sharedInstance; 
 
-//默认的服务提供商
+//默认的服务器
 @property (nonatomic, strong) HYNetworkServer *defaultSever;
 
 //用于向url添加参数的filter，比如签名，就可以设计成一个filter，公共参数，也可以设计成一个filter 组成 filter chain
@@ -29,8 +30,9 @@
 
 //网络安全配置
 @property (nonatomic, strong) HYNetworkSecurityPolicy *securityPolicy;
+
 //所有Reqeust使用的缓存
-//@property (nonatomic, strong) HYResponseCache *cache;
+@property (nonatomic, strong) HYResponseCache *cache;
 
 - (void)addUrlFilter:(id<HYNetworkParameterDecoratorProtocol>)filter;
 - (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter;

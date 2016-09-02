@@ -13,8 +13,8 @@
 - (NSURLSessionDownloadTask *)downloadTaskWithURL:(NSString *)URLString
                                          progress:(void (^)(NSProgress *downloadProgress)) downloadProgressBlock
                                       destination:(NSURL * (^)(NSURL *targetPath, NSURLResponse *response))destination
-                                          success:(void (^)(NSURLSessionDownloadTask *, id))success
-                                          failure:(void (^)(NSURLSessionDownloadTask *, NSError *))failure
+                                          success:(void (^)(NSURLSessionDownloadTask *task, id response))success
+                                          failure:(void (^)(NSURLSessionDownloadTask *task, NSError *error))failure
 {
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:nil error:&serializationError];

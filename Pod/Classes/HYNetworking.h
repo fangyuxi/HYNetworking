@@ -19,5 +19,6 @@
 #import "HYNetworkDefines.h"
 #import "HYNetworkServer.h"
 #import "HYSimpleRequest.h"
+#import "HYBatchRequests.h"
 
 #endif /* HYNetwork_h */

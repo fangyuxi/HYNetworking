@@ -10,6 +10,8 @@
 #import "HYNetworkLogger.h"
 #import <objc/runtime.h>
 #import "AFHTTPSessionManager+Download.h"
+#import "HYNetworkDefines.h"
+#import "HYNetworkConfig.h"
 
 static HYBaseRequestInternal *sharedInstance = nil;
 
@@ -143,14 +145,97 @@ static HYBaseRequestInternal *sharedInstance = nil;
     
     request.allParam = finalParam;
     
-    //发送请求
-    [self p_sendRequestWithUrl:url
-                         param:finalParam
-                        method:method
-                       request:request
-                  downloadPath:downloadPath
-             constructingBlock:constructingBlock
-     completeGroup:completeGroup];
+    //缓存逻辑  !!需要重构
+    if (method == HYRequestMethodGet) {
+        
+        //不读缓存的策略，直接请求网络
+        if (request.cachePolicy == HYRequestCachePolicyNeverUseCache ||
+            request.cachePolicy == HYRequestCachePolicyDonotReadCache) {
+            
+            //发送请求
+            [self p_sendRequestWithUrl:url
+                                 param:finalParam
+                                method:method
+                               request:request
+                          downloadPath:downloadPath
+                     constructingBlock:constructingBlock
+                         completeGroup:completeGroup];
+        }
+        else
+        {
+            NSString *key = SanitizeFileNameString(url);
+            if (key && key.length != 0) {
+                
+                HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
+                if (cache) {
+                    
+                    [cache objectForKey:key withBlock:^(HYDiskCache *cache,
+                                                        NSString *key,
+                                                        id object) {
+                        
+                        if (object) {
+                            
+                            [[HYNetworkLogger sharedInstance] logResponse:object withRequest:request];
+                            
+                            if (request.successHandler)
+                            {
+                                request.successHandler(request, object);
+                            }
+                            if ([request.delegate respondsToSelector:@selector(requestDidFinished:withResponse:)])
+                            {
+                                [request.delegate requestDidFinished:request withResponse:object];
+                            }
+                            
+                            [request clearBlock];
+                            
+                            //读完缓存再请求网络
+                            if (request.cachePolicy == HYRequestCachePolicyReadCacheAndRequest) {
+                                
+                                //发送请求
+                                [self p_sendRequestWithUrl:url
+                                                     param:finalParam
+                                                    method:method
+                                                   request:request
+                                              downloadPath:downloadPath
+                                         constructingBlock:constructingBlock
+                                             completeGroup:completeGroup];
+                            }
+                            return;
+                        }
+                        else
+                        {
+                            //如果没有缓存，那么请求网络
+                            if (request.cachePolicy == HYRequestCachePolicyReadCacheOrRequest) {
+                                
+                                //发送请求
+                                [self p_sendRequestWithUrl:url
+                                                     param:finalParam
+                                                    method:method
+                                                   request:request
+                                              downloadPath:downloadPath
+                                         constructingBlock:constructingBlock
+                                             completeGroup:completeGroup];
+                            }
+                            return;
+                        }
+                    }];
+                    
+                }
+            }
+        }
+    }
+    else
+    {
+        //发送请求
+        [self p_sendRequestWithUrl:url
+                             param:finalParam
+                            method:method
+                           request:request
+                      downloadPath:downloadPath
+                 constructingBlock:constructingBlock
+                     completeGroup:completeGroup];
+    }
+    
 }
 
 - (void)p_sendRequestWithUrl:(NSString *)url
@@ -175,8 +260,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
         }
     };
     
-    void (^failureBlock)(NSURLSessionDataTask * task, NSError * error)
-    = ^(NSURLSessionDataTask * task, NSError * error)
+    void (^failureBlock)(NSURLSessionDataTask *task, NSError *error)
+    = ^(NSURLSessionDataTask *task, NSError *error)
     {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf p_handleFailureWithError:error andRequest:request];
@@ -502,6 +587,25 @@ static HYBaseRequestInternal *sharedInstance = nil;
     }
     
     [[HYNetworkLogger sharedInstance] logResponse:responseObject withRequest:request];
+    
+    
+    if (request.requestMethod == HYRequestMethodGet &&
+        request.cachePolicy != HYRequestCachePolicyNeverUseCache) {
+        
+        HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
+        if (cache) {
+            
+            NSString *key = SanitizeFileNameString(request.URL);
+            [cache setObject:responseObject
+                      forKey:key
+                      maxAge:request.cacheMaxAge
+                   withBlock:^(HYDiskCache *cache,
+                               NSString *key,
+                               id object) {
+               
+            }];
+        }
+    }
     
     if (request.successHandler)
     {

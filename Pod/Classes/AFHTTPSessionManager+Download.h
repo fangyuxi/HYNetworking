@@ -13,7 +13,7 @@
 - (NSURLSessionDownloadTask *)downloadTaskWithURL:(NSString *)URLString
                                          progress:(void (^)(NSProgress *downloadProgress)) downloadProgressBlock
                                       destination:(NSURL * (^)(NSURL *targetPath, NSURLResponse *response))destination
-                                          success:(void (^)(NSURLSessionDownloadTask *, id))success
-                                          failure:(void (^)(NSURLSessionDownloadTask *, NSError *))failure;
+                                          success:(void (^)(NSURLSessionDownloadTask *task, id responseObject))success
+                                          failure:(void (^)(NSURLSessionDownloadTask *task, NSError *error))failure;
 
 @end

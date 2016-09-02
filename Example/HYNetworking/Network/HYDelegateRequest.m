@@ -17,7 +17,7 @@
 
 - (NSString *)apiUrl
 {
-    return @"/api/system?method=initApp";
+    return @"/api/list/jianzhi";
 }
 
 - (NSString *)name
@@ -27,15 +27,28 @@
 
 - (id)responseDataValidator
 {
-    return @{@"result":
-                 @{@"data":
-                     @{@"appParamVersionVO":
-                            @{@"cateVersion":[NSNumber class]}}}};
+    return nil;
 }
 
 - (id)requestArgument
 {
-    return @{@"test":@"fangyuxi"};
+    return @{@"v":@"1",
+             @"os":@"android",
+             @"curVer":@"7.2.5",
+             @"appId":@"1",
+             @"action":@"getBigMetaInfo",
+             @"format":@"json",
+             @"localname":@"bj"};
+}
+
+- (HYRequestCachePolicy)cachePolicy
+{
+    return HYRequestCachePolicyReadCacheIfInMaxAgeAndRequest;
+}
+
+- (NSTimeInterval)cacheMaxAge
+{
+    return 60 * 60;
 }
 
 @end

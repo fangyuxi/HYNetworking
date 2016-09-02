@@ -37,15 +37,16 @@ typedef NS_ENUM(NSInteger , HYRequestMethod)
 typedef NS_ENUM(NSInteger , HYRequestCachePolicy)
 {
     //不写缓存
-    HYRequestCachePolicyNeverUseCache,
-    //如果缓存有效的话，先读缓存再请求服务器
-    HYRequestCachePolicyReadCacheIfInMaxAgeAndRequest,
-    //不管缓存是否有效，先读缓存再请求服务器
-    HYRequestCachePolicyReadCacheIgnoreAgeAndRequest,
-    //如果缓存有效的话，只读缓存
-    HYRequestCachePolicyOnlyReadCacheIfInMaxAge,
+    HYRequestCachePolicyNeverUseCache = 1,
+    //不读缓存，但是写缓存
+    HYRequestCachePolicyDonotReadCache,
+    //先读缓存再请求服务器
+    HYRequestCachePolicyReadCacheAndRequest,
     //不管缓存是否有效，只读缓存
-    HYRequestCachePolicyReadCacheIgnoreAge
+    HYRequestCachePolicyReadCache,
+    //先读缓存，如果没有缓存，那么请求网络
+    HYRequestCachePolicyReadCacheOrRequest,
+    
 };
 
 #pragma mark timeout
@@ -63,3 +64,16 @@ extern NSInteger const KNetworkResponseValidatetErrorCode;
 extern NSString *const KNetworkHYErrorDomain;
 
 #pragma mark notification
+
+#pragma mark method
+
+NSString *URLParametersStringFromParameters(NSDictionary *parameters);
+NSString *URLStringWithOriginUrlString(NSString *originUrlString, NSDictionary *parameters);
+NSString *HYSStringMD5(NSString *string);
+NSString *SanitizeFileNameString(NSString *fileName);
+
+
+
+
+
+

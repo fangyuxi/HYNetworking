@@ -68,7 +68,7 @@ static NSString *const HYResponseHYRequestKey         = @"HYResponseHYRequestKey
         _responseHTTPHeadFields = [aDecoder decodeObjectForKey:HYResponseHTTPHeadFieldsKey];
         _responseHTTPStatusCode = [[aDecoder decodeObjectForKey:HYResponseHTTPStatusCodeKey] integerValue];
         _status = [[aDecoder decodeObjectForKey:HYResponseStatusKey] integerValue];
-        
+        _fromCache = YES;
         return self;
     }
     return nil;
