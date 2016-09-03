@@ -43,9 +43,9 @@
 //        [request start];
 //    }
     
-    HYDelegateRequest *request1 = [[HYDelegateRequest alloc] init];
-    request1.delegate = self;
-    [request1 start];
+//    HYDelegateRequest *request1 = [[HYDelegateRequest alloc] init];
+//    request1.delegate = self;
+//    [request1 start];
     
 //    HYDelegateRequest *request2 = [[HYDelegateRequest alloc] init];
 //    request2.delegate = self;

@@ -163,7 +163,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         }
         else
         {
-            NSString *key = SanitizeFileNameString(url);
+            NSString *key = SanitizeFileNameString(@"fangyuxi");
             if (key && key.length != 0) {
                 
                 HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
@@ -595,7 +595,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
         if (cache) {
             
-            NSString *key = SanitizeFileNameString(request.URL);
+            NSString *key = SanitizeFileNameString(@"fangyuxi");
             [cache setObject:responseObject
                       forKey:key
                       maxAge:request.cacheMaxAge

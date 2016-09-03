@@ -43,7 +43,7 @@
 
 - (HYRequestCachePolicy)cachePolicy
 {
-    return HYRequestCachePolicyReadCacheIfInMaxAgeAndRequest;
+    return HYRequestCachePolicyReadCacheOrRequest;
 }
 
 - (NSTimeInterval)cacheMaxAge
