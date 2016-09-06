@@ -14,6 +14,8 @@
     NSMutableArray *_responseFilters;
 }
 
+@synthesize urlDecorators = _urlFilters;
+
 #pragma mark init
 
 + (HYNetworkConfig *)sharedInstance

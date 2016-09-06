@@ -148,6 +148,9 @@ static HYBaseRequestInternal *sharedInstance = nil;
     //缓存逻辑  !!需要重构
     if (method == HYRequestMethodGet) {
         
+        NSString *key = [self keyForUrl:url param:finalParam];
+        request.key = key;
+        
         //不读缓存的策略，直接请求网络
         if (request.cachePolicy == HYRequestCachePolicyNeverUseCache ||
             request.cachePolicy == HYRequestCachePolicyDonotReadCache) {
@@ -163,9 +166,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         }
         else
         {
-            NSString *key = SanitizeFileNameString(@"fangyuxi");
             if (key && key.length != 0) {
-                
                 HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
                 if (cache) {
                     
@@ -595,7 +596,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
         HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
         if (cache) {
             
-            NSString *key = SanitizeFileNameString(@"fangyuxi");
+            NSString *key = request.key;
             [cache setObject:responseObject
                       forKey:key
                       maxAge:request.cacheMaxAge
@@ -716,5 +717,59 @@ static HYBaseRequestInternal *sharedInstance = nil;
         return NO;
     }
 }
+
+- (NSString *)keyForUrl:(NSString *)key
+                  param:(NSDictionary *)param
+{
+    NSURL *url = [NSURL URLWithString:key];
+    NSString *query = url.query;
+    if (query)
+    {
+        NSArray *parametersArray = [query componentsSeparatedByString:@"&"];
+        NSMutableDictionary *urlParameters = [self dicConvertByArray:parametersArray];
+        [urlParameters addEntriesFromDictionary:param];
+        return [NSString stringWithFormat:@"%@%@", url.path, [self sortedStringInDic:urlParameters]];
+    }
+    else
+    {
+        if (param && [param.allKeys count] != 0) {
+            return [NSString stringWithFormat:@"%@%@", url.path, [self sortedStringInDic:param]];
+
+        }
+    }
+    return key;
+}
+
+- (NSMutableDictionary *)dicConvertByArray:(NSArray *)array
+{
+    if (!array)
+    {
+        return  nil;
+    }
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *temArray = [( NSString *)obj componentsSeparatedByString:@"="];
+        [dic setObject:temArray[1] forKey:temArray[0]];
+    }];
+    return dic;
+}
+
+- (NSString *)sortedStringInDic:(NSDictionary *)dic
+{
+    NSMutableArray * array = [[NSMutableArray alloc] init];
+    [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [array addObject:[NSString stringWithFormat:@"%@%@",key,obj]];
+    }];
+    NSArray * sortedArray = [array sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [obj1 compare:obj2 options:NSLiteralSearch];
+    }];
+    NSMutableString * resultStr = [[NSMutableString alloc] init];
+    [sortedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [resultStr appendString:obj];
+    }];
+    
+    return resultStr;
+}
+
 
 @end

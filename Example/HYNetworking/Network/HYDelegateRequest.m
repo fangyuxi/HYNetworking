@@ -39,6 +39,7 @@
              @"action":@"getBigMetaInfo",
              @"format":@"json",
              @"localname":@"bj"};
+    return nil;
 }
 
 - (HYRequestCachePolicy)cachePolicy

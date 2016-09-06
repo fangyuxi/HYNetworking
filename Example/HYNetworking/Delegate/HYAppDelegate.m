@@ -42,7 +42,7 @@
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     config.cache = [[HYResponseCache alloc] initWithName:@"fangyuxi"];
     
-//    [config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
+    //[config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
 //    [config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
 //    [config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];
     
