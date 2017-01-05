@@ -42,6 +42,10 @@
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     config.cache = [[HYResponseCache alloc] initWithName:@"fangyuxi"];
     
+    [HYNetworkConfig sharedInstance].securityPolicy.pinningMode = HYSSLPinningModeCertificate;
+    [HYNetworkConfig sharedInstance].securityPolicy.allowInvalidCertificates = YES;
+    [HYNetworkConfig sharedInstance].securityPolicy.validatesDomainName = NO;
+    
     //[config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
 //    [config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
 //    [config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];

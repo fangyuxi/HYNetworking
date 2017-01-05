@@ -17,7 +17,8 @@
 
 - (NSString *)apiUrl
 {
-    return @"/api/list/jianzhi";
+    return @"/api/list/jianzhi?&geotype=baidu&ct=filter&curVer=7.6.0&appId=1&filterParams=&isNeedAd=0&action=getListInfo%2CgetFilterInfo&location=1%2C1142%2C7551&format=json&os=ios&tabkey=allcity&localname=bj&page=1&v=1&isBigPage=1";
+    
 }
 
 - (NSString *)name
@@ -32,19 +33,12 @@
 
 - (id)requestArgument
 {
-    return @{@"v":@"1",
-             @"os":@"android",
-             @"curVer":@"7.2.5",
-             @"appId":@"1",
-             @"action":@"getBigMetaInfo",
-             @"format":@"json",
-             @"localname":@"bj"};
     return nil;
 }
 
 - (HYRequestCachePolicy)cachePolicy
 {
-    return HYRequestCachePolicyReadCacheOrRequest;
+    return HYRequestCachePolicyNeverUseCache;
 }
 
 - (NSTimeInterval)cacheMaxAge

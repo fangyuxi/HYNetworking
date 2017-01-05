@@ -18,7 +18,7 @@
         {
             return @"";
         }
-        return @"http://app.58.com";
+        return @"https://app.58.com";
     }
     else
     {

@@ -749,7 +749,9 @@ static HYBaseRequestInternal *sharedInstance = nil;
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSArray *temArray = [( NSString *)obj componentsSeparatedByString:@"="];
-        [dic setObject:temArray[1] forKey:temArray[0]];
+        if (temArray.count == 2) {
+            [dic setObject:temArray[1] forKey:temArray[0]];
+        }
     }];
     return dic;
 }

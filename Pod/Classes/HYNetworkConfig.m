@@ -42,7 +42,7 @@
         _responseFilters = [NSMutableArray array];
         
         //采用默认的安全策略
-        _securityPolicy = [HYNetworkSecurityPolicy new];
+        _securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     }
     return self;
 }
