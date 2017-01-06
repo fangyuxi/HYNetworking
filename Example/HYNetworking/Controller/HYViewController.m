@@ -9,7 +9,7 @@
 #import "HYViewController.h"
 #import "HYNetworking.h"
 #import "HYDelegateRequest.h"
-
+#import "HYAppDelegate.h"
 @interface HYViewController ()<HYRequestDelegate,HYBatchRequestsDelegate>
 {
     
@@ -21,10 +21,20 @@
 
 @implementation HYViewController
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    HYAppDelegate *delegate = (HYAppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    [delegate addObserver:self forKeyPath:@"fangyuxi" options:NSKeyValueObservingOptionNew context:@"fangyuxi"];
+    [delegate setValue:@"" forKey:@"fangyuxi"];
     
 //    for (NSInteger index = 0; index < 1; ++index)
 //    {
@@ -43,9 +53,9 @@
 //        [request start];
 //    }
     
-    HYDelegateRequest *request1 = [[HYDelegateRequest alloc] init];
-    request1.delegate = self;
-    [request1 start];
+//    HYDelegateRequest *request1 = [[HYDelegateRequest alloc] init];
+//    request1.delegate = self;
+//    [request1 start];
     
 //    HYDelegateRequest *request2 = [[HYDelegateRequest alloc] init];
 //    request2.delegate = self;

@@ -9,7 +9,9 @@
 @import UIKit;
 
 @interface HYAppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+    NSString *_fangyuxi;
+}
 @property (strong, nonatomic) UIWindow *window;
-
+@property (nonatomic, strong) NSString *string;
 @end
