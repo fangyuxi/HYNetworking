@@ -60,10 +60,9 @@ extern NSString *const KNetworkConnectErrorMSG;
 extern NSString *const KNetworkConnectCancelErrorMSG;
 extern NSString *const KNetworkResponseValidatetErrorMSG;
 extern NSInteger const KNetworkResponseValidatetErrorCode;
-
 extern NSString *const KNetworkHYErrorDomain;
 
-#pragma mark notification
+extern NSString *const KNetworkHYBusinessCore;
 
 #pragma mark method
 

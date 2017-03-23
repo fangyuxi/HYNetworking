@@ -22,15 +22,35 @@ NS_ASSUME_NONNULL_BEGIN
 + (HYBaseRequestInternal *)sharedInstance;
 
 
-@property (nonatomic, strong) HYNetworkConfig *networkConfig;
+/**
+ send request
 
+ @param request 'request'
+ @param completeGroup 'callback in completeGroup'
+ */
 - (void)sendRequest:(HYBaseRequest *)request
   withCompleteGroup:(nullable dispatch_group_t)completeGroup;
 
+/**
+ send request in default completeGroup
+
+ @param request 'request'
+ */
 - (void)sendRequest:(HYBaseRequest *)request;
+
+/**
+ send batch requests
+
+ @param requests array of request
+ */
 - (void)sendBatchRequest:(HYBatchRequests *)requests;
+
+/**
+ cancel
+ */
 - (void)cancelRequeset:(HYBaseRequest *)request;
 - (void)cancelAllRequest;
+
 
 - (BOOL)isLoadingRequest:(HYBaseRequest *)request;
 

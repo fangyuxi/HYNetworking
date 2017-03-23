@@ -6,7 +6,7 @@
 //
 //
 
-#import <HYCache/HYCache.h>
+#import "HYCache.h"
 
 @interface HYResponseCache : HYDiskCache
 

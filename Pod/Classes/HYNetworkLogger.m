@@ -31,7 +31,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        BOOL needLog = request.debugMode ? YES : [HYNetworkConfig sharedInstance].responseLogOn;
+        BOOL needLog = request.debugMode ? YES : [HYNetworkConfig sharedInstance].logResponse;
         
         if (!needLog)
         {
@@ -42,7 +42,7 @@
         NSMutableString *log = [NSMutableString stringWithFormat:@"\n==================================================================================\n               Response  status:%@  code:%ld           \n==================================================================================\n\n",[self statusStringOfCode:response.status], (long)response.responseHTTPStatusCode];
         
         //返回的内容
-        if ([HYNetworkConfig sharedInstance].headerLogOn)
+        if ([HYNetworkConfig sharedInstance].logHeader)
         {
             [log appendString:@"Response Header \n"];
             [log appendString:[self jsonStringWithObject:response.responseHTTPHeadFields]];
@@ -68,7 +68,7 @@
         
         //这个response对应的request信息
         [log appendString:@"\n---------------  Related Request Start  --------------\n\n"];
-        if ([HYNetworkConfig sharedInstance].headerLogOn)
+        if ([HYNetworkConfig sharedInstance].logHeader)
         {
             [log appendString:@"Request Header \n"];
             [log appendString:[self jsonStringWithObject:response.responseHTTPHeadFields]];
@@ -104,7 +104,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
        
-        BOOL needLog = request.debugMode ? YES : [HYNetworkConfig sharedInstance].requestLogOn;
+        BOOL needLog = request.debugMode ? YES : [HYNetworkConfig sharedInstance].logRequest;
         
         if (!needLog)
         {
@@ -115,7 +115,7 @@
         NSMutableString *log = [NSMutableString stringWithFormat:@"\n==================================================================================\n                      Request Start            \n==================================================================================\n\n"];
         
         //request信息
-        if ([HYNetworkConfig sharedInstance].headerLogOn)
+        if ([HYNetworkConfig sharedInstance].logHeader)
         {
             [log appendString:@"Request Header \n"];
             [log appendString:[self jsonStringWithObject:systemRequest.allHTTPHeaderFields]];

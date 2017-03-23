@@ -11,7 +11,6 @@
 @implementation HYNetworkConfig{
 
     NSMutableArray *_urlFilters;
-    NSMutableArray *_responseFilters;
 }
 
 @synthesize urlDecorators = _urlFilters;
@@ -34,12 +33,11 @@
     self = [super init];
     if (self)
     {
-        self.requestLogOn = YES;
-        self.responseLogOn = YES;
-        self.headerLogOn = YES;
+        self.logRequest = YES;
+        self.logResponse = YES;
+        self.logHeader = YES;
         
         _urlFilters = [NSMutableArray array];
-        _responseFilters = [NSMutableArray array];
         
         //采用默认的安全策略
         _securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
@@ -49,23 +47,12 @@
 
 #pragma mark filters
 
-- (void)addUrlFilter:(id<HYNetworkParameterDecoratorProtocol>)filter
+- (void)addUrlDecorators:(id<HYNetworkParameterDecoratorProtocol>)decorator
 {
-    if (!filter)
-    {
+    if (!decorator){
         return;
     }
-    
-    [_urlFilters addObject:filter];
-}
-
-- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter
-{
-    if (!filter)
-    {
-        return;
-    }
-    [_responseFilters addObject:filter];
+    [_urlFilters addObject:decorator];
 }
 
 

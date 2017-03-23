@@ -38,6 +38,10 @@
     return nil;
 }
 
+- (NSString *)businessId{
+    return @"core";
+}
+
 - (NSString *)outUrl
 {
     return [HYTools urlStringWithOriginUrlString:self.inUrl appendParameters:[self outParameterDic]];

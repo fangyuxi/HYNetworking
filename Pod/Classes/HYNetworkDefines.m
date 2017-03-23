@@ -13,6 +13,7 @@ NSString *const KNetworkConnectErrorMSG = @"网络错误，请检查网络";
 NSString *const KNetworkConnectCancelErrorMSG = @"请求被取消";
 NSString *const KNetworkResponseValidatetErrorMSG = @"参数验证错误";
 NSString *const KNetworkHYErrorDomain = @"HYNetworkErrorDomain";
+NSString *const KNetworkHYBusinessCore = @"core";
 
 NSInteger const KNetworkResponseValidatetErrorCode = -1;
 

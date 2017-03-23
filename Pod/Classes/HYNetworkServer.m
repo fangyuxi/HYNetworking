@@ -29,7 +29,7 @@
     return nil;
 }
 
-- (NSString *)baseUrl
+- (NSString *)host
 {
     [self doesNotRecognizeSelector:_cmd];
     return nil;

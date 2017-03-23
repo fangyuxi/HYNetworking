@@ -10,11 +10,8 @@
 #import "AFNetworking.h"
 #import "HYNetworkDefines.h"
 #import "HYNetworkResponse.h"
-#import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkParameterDecoratorProtocol.h"
 #import "HYNetworkServer.h"
-
-NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark block
 
@@ -35,11 +32,12 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 
 /**
  *  与HYNetworkConfig里面的baseUrl和参数组成完整的请求url
-    原则上apiUrl返回的字符串不应该包含任何参数 应该是:/api/user
+    原则上api返回的字符串不应该包含host和任何参数 应该是:/api/user
+    但是如果包含了host，那么server中的host会被忽略
  *
  *  @return url string
  */
-- (NSString *)apiUrl;
+- (NSString *)api;
 
 /**
  *  一个请求的唯一标识符，原则上不应该重复，业务层可以区分不同的业务请求
@@ -47,38 +45,38 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  *
  *  @return string
  */
-- (NSString *)name;
+- (NSString *)identifier;
 
-@optional
 
 /**
- *  完整的url 如果有值，那么会忽略掉HYNetworkConfig里面的baseUrl，也会忽略掉自身的server
-    一般为调试用，如果有request实现了fullUrl 请造一个警告
- *
- *  @return url string
+ 业务方id，代表了一个业务线，会按照这个业务线id整合业务线自有的参数
+
+ @return id
  */
-- (NSString *)fullUrl;
+- (NSString *)businessId;
+
+@optional
 
 /**
  *  在HTTP报头添加的自定义参数
  *
  *  @return 字典
  */
-- (NSDictionary *)requestHeaderValueDictionary;
+- (NSDictionary *)requestHeaderDictionary;
 
 /**
  *  超时时间
  *
  *  @return 默认30秒
  */
-- (NSTimeInterval)requestTimeoutInterval;
+- (NSTimeInterval)requestTimeout;
 
 /**
  *  当POST的body
  *
  *  @return 构建Body的block
  */
-- (HYConstructingBlock)constructingBodyBlock;
+- (HYConstructingBlock)constructedBodyBlock;
 
 /**
  *  请求参数
@@ -158,24 +156,19 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
 #pragma mark HYBaseRequest Interface
 
 @interface HYBaseRequest : NSObject <HYBaseRequestProtocol>
-{
 
-
-}
-
-
-@property (nonatomic, weak) __nullable id<HYRequestDelegate> delegate;
+@property (nonatomic, weak) id<HYRequestDelegate> delegate;
 
 /**
  *  通常是自己，如果多个接口validator可以重用，也可以单独定义对象
  */
-@property (nonatomic, weak) __nullable id<HYRequestValidator> validator;
+@property (nonatomic, weak) id<HYRequestValidator> validator;
 /**
  *  服务提供者，如果不提供，那么使用config的默认提供者
  */
-@property (nonatomic, strong) HYNetworkServer * __nullable server;
+@property (nonatomic, strong) HYNetworkServer *server;
 
-@property (nonatomic, strong) NSDictionary * __nullable userInfo;
+@property (nonatomic, strong) NSDictionary *userInfo;
 
 /**
  *  debug 此request是否打印log 如果为true 那么不论全局log是否打印，这个request都打印
@@ -183,42 +176,20 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  */
 @property (nonatomic, assign)BOOL debugMode;
 
-/**
- *  参数和返回值过滤器，如果没有赋值，那么默认使用HYNetworkConfig里面的过滤器
-    如果有赋值，会忽略掉config
- */
-@property (nonatomic, strong) id<HYNetworkParameterDecoratorProtocol> urlDecorator;
-@property (nonatomic, strong) id<HYNetworkResponseFilterProtocol> responseFilter;
-
-@property (nonatomic, copy) __nullable HYRequestFinishedSuccessHandler successHandler;
-@property (nonatomic, copy) __nullable HYRequestFinishedFailuerHandler failerHandler;
-@property (nonatomic, copy) __nullable HYRequestProgressHandler progressHandler;
+@property (nonatomic, copy) HYRequestFinishedSuccessHandler successHandler;
+@property (nonatomic, copy) HYRequestFinishedFailuerHandler failerHandler;
+@property (nonatomic, copy) HYRequestProgressHandler progressHandler;
 
 
 - (void)start;
-
-- (void)startWithSuccessHandler:(__nullable HYRequestFinishedSuccessHandler)successHandler
-                 failuerHandler:(__nullable HYRequestFinishedFailuerHandler)failuerHandler;
-
+- (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
+                 failuerHandler:(HYRequestFinishedFailuerHandler)failuerHandler;
 - (void)cancel;
 - (BOOL)isLoading;
 
-
 /**
- *  debug 此request是否打印log 如果为true 那么不论全局log是否打印，这个request都打印
-    如果是false，那么遵循全局设置
- *
- *  @param request request
- *
- *  @return Bool
- */
-- (BOOL)isEqualToRequest:(HYBaseRequest *)request;
-
-/**
- *  真正发起请求的URL 调用start后可用
+ *  真正发起请求的URL 调用start后可用，用于调试和log
  */
 @property (nonatomic, copy, readonly)NSString *URL;
 
 @end
-
-NS_ASSUME_NONNULL_END

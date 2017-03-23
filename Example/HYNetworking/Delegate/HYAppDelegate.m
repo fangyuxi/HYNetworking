@@ -11,7 +11,6 @@
 
 #import "HYNetworkDefaultServer.h"
 #import "HYNetworkGlobalParamFilter.h"
-#import "HYNetworkGlobalResponseFilter.h"
 #import "HYNetworkSignatureUrlFilter.h"
 #import "HYNetworkSomethingParamFilter.h"
 #import "HYResponseCache.h"
@@ -36,7 +35,7 @@
 {
     HYNetworkConfig *config = [HYNetworkConfig sharedInstance];
     config.defaultSever = [[HYNetworkDefaultServer alloc] init];
-    config.headerLogOn = NO;
+    config.logHeader = NO;
     config.defaultSever.online = YES;
     config.defaultSever.verify = NO;
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
@@ -50,8 +49,6 @@
 //    [config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
 //    [config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];
     
-    
-    [config addResponseFilter:[[HYNetworkGlobalResponseFilter alloc] init]];
 }
 
 - (void)setString:(NSString *)string

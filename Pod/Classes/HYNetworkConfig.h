@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "HYNetworkParameterDecoratorProtocol.h"
 #import "HYNetworkSecurityPolicy.h"
-#import "HYNetworkResponseFilterProtocol.h"
 #import "HYNetworkServer.h"
 #import "HYResponseCache.h"
 
@@ -20,30 +19,31 @@
 
 + (HYNetworkConfig *)sharedInstance; 
 
-//默认的服务器
+/**
+ default server
+ */
 @property (nonatomic, strong) HYNetworkServer *defaultSever;
 
-//用于向url添加参数的filter，比如签名，就可以设计成一个filter，公共参数，也可以设计成一个filter 组成 filter chain
-@property (nonatomic, strong, readonly) NSArray<id<HYNetworkParameterDecoratorProtocol>> *urlDecorators;
-//用于向已经验证完毕的response过滤错误
-@property (nonatomic, strong, readonly) NSArray<id<HYNetworkResponseFilterProtocol>> *responseFilters;
 
-//网络安全配置
+/**
+ compose decorator chain
+ */
+@property (nonatomic, strong, readonly) NSArray<id<HYNetworkParameterDecoratorProtocol>> *urlDecorators;
+
 @property (nonatomic, strong) HYNetworkSecurityPolicy *securityPolicy;
 
-//所有Reqeust使用的缓存
+/**
+ cache control
+ */
 @property (nonatomic, strong) HYResponseCache *cache;
 
-- (void)addUrlFilter:(id<HYNetworkParameterDecoratorProtocol>)filter;
-- (void)addResponseFilter:(id<HYNetworkResponseFilterProtocol>)filter;
+- (void)addUrlDecorators:(id<HYNetworkParameterDecoratorProtocol>)decorator;
 
-
-//日志开关
-
-//默认都为1
-
-@property (nonatomic, assign, getter=isRequestLogOn) BOOL requestLogOn; //打印请求开始
-@property (nonatomic, assign, getter=isResponseLogOn) BOOL responseLogOn; //打印返回值
-@property (nonatomic, assign, getter=isHeaderLogOn) BOOL headerLogOn; //是否打印header
+/**
+ log switch
+ */
+@property (nonatomic, assign, getter=isRequestLogOn) BOOL logRequest;
+@property (nonatomic, assign, getter=isResponseLogOn) BOOL logResponse;
+@property (nonatomic, assign, getter=isHeaderLogOn) BOOL logHeader;
 
 @end

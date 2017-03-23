@@ -9,13 +9,29 @@
 #import <Foundation/Foundation.h>
 
 
-//任何的server必须继承这个协议
+/**
+ servers must comform to protocol
+ */
 @protocol HYNetworkServerProtocol <NSObject>
 
-@property (nonatomic, readonly)NSString *serverName;
+/**
+ identifier name of server
+ */
+@property (nonatomic, readonly, nonnull)NSString *serverName;
+
+/**
+ server's host
+ */
+@property (nonatomic, readonly, nonnull)NSString *host;
+
+
+/**
+ server environment switch
+ */
 @property (nonatomic, assign, getter=isOnline)BOOL online;
+
+@optional
 @property (nonatomic, assign, getter=isVerify)BOOL verify;
-@property (nonatomic, readonly)NSString *baseUrl;
 
 @end
 
@@ -23,7 +39,5 @@
 {
     
 }
-
-
 
 @end

@@ -23,6 +23,10 @@
 @synthesize outParameterDic = _outParameterDic;
 @synthesize inParameterDic = _inParameterDic;
 
+- (NSString *)businessId{
+    return @"jainzhi";
+}
+
 - (NSString *)outUrl
 {
     return [HYTools urlStringWithOriginUrlString:self.inUrl appendParameters:[self outParameterDic]];

@@ -22,12 +22,8 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
-        NSAssert([self conformsToProtocol:@protocol(HYBaseRequestProtocol)], @"Your Must ConformToProtocol : HYBaseRequestProtocol");
-
+    if (self){
         self.validator = (id <HYRequestValidator>)self;
-
         return self;
     }
     return nil;
@@ -36,126 +32,73 @@
 #pragma mark request action
 
 //发起请求
-- (void)start
-{
+- (void)start{
     [[HYBaseRequestInternal sharedInstance] sendRequest:self];
     return;
 }
 
 - (void)startWithSuccessHandler:(HYRequestFinishedSuccessHandler)successHandler
-                 failuerHandler:(HYRequestFinishedFailuerHandler)failerHandler
-{
+                 failuerHandler:(HYRequestFinishedFailuerHandler)failerHandler{
     self.successHandler = successHandler;
     self.failerHandler = failerHandler;
     [self start];
 }
 
 //取消请求
-- (void)cancel
-{
+- (void)cancel{
     [[HYBaseRequestInternal sharedInstance] cancelRequeset:self];
     return;
 }
 
-- (BOOL)isLoading
-{
+- (BOOL)isLoading{
     return [[HYBaseRequestInternal sharedInstance] isLoadingRequest:self];
 }
 
 //打破循环引用
-- (void)clearBlock
-{
+- (void)clearBlock{
     self.successHandler = nil;
     self.failerHandler = nil;
     self.progressHandler = nil;
 }
 
-#pragma mark equel
-
-- (NSUInteger)hash
-{
-    NSMutableString *hashString = [NSMutableString stringWithFormat:@"%ld",(long)self];
-    return [hashString hash];
-}
-
-- (BOOL)isEqualToRequest:(HYBaseRequest *)request
-{
-    return [self hash] == [request hash];
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object)
-    {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[HYBaseRequest class]])
-    {
-        return NO;
-    }
-
-    return [self isEqualToRequest:(HYBaseRequest *) object];
-}
-
-- (NSString *)description
-{
+- (NSString *)description{
     return [NSString stringWithFormat:@"url:%@ identifier : %@", [self apiUrl],[self name]];
 }
 
 #pragma mark protocol empty method must complete in child
 
-- (HYRequestMethod)requestMethod
-{
+- (HYRequestMethod)requestMethod{
     [self doesNotRecognizeSelector:_cmd];
     return HYRequestMethodGet ;
 }
 
-- (NSString *)apiUrl
-{
+- (NSString *)apiUrl{
     [self doesNotRecognizeSelector:_cmd];
     return nil ;
 }
 
-- (NSString *)name
-{
+- (NSString *)name{
     [self doesNotRecognizeSelector:_cmd];
     return nil ;
 }
 
-//完整的url 如果有值，那么会忽略掉HYNetworkConfig里面的DefaultServer中的baseUrl
-- (NSString *)fullUrl
-{
+- (NSDictionary *)requestHeaderValueDictionary{
     return nil;
 }
 
-/// 在HTTP报头添加的自定义参数
-- (NSDictionary *)requestHeaderValueDictionary
-{
-    return nil;
-}
-
-//默认30秒
-- (NSTimeInterval)requestTimeoutInterval
-{
+- (NSTimeInterval)requestTimeoutInterval{
     return 0;
 }
 
-/// 当POST的body
-- (HYConstructingBlock)constructingBodyBlock
-{
+- (HYConstructingBlock)constructingBodyBlock{
     return nil;
 }
 
-/// 请求的参数列表
-- (NSDictionary *)requestArgument
-{
+- (NSDictionary *)requestArgument{
     return nil;
 }
 
-//下载的URL 如果子类提供了path 那么将会把内容下载到指定位置
-- (NSString *)downloadPath
-{
+- (NSString *)downloadPath{
     return nil;
 }
 

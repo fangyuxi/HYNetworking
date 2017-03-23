@@ -16,7 +16,6 @@
 static HYBaseRequestInternal *sharedInstance = nil;
 
 @implementation HYBaseRequestInternal{
-
     // shared manager
     AFHTTPSessionManager *_manager;
     // shared configer
@@ -26,35 +25,27 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 #pragma mark init
 
-+ (HYBaseRequestInternal *)sharedInstance
-{
++ (HYBaseRequestInternal *)sharedInstance{
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
     });
-    
-
     return sharedInstance;
 }
 
-- (instancetype)init
-{
-    if (!sharedInstance)
-    {
+- (instancetype)init{
+    if (!sharedInstance){
         sharedInstance = [super init];
-        
         _manager = [AFHTTPSessionManager manager];
         _networkConfig = [HYNetworkConfig sharedInstance];
-        
     }
     return sharedInstance;
 }
 
 #pragma mark send cancel
 
-- (void)sendBatchRequest:(HYBatchRequests *)requests
-{
+- (void)sendBatchRequest:(HYBatchRequests *)requests{
+    
     dispatch_group_t completeGroup = dispatch_group_create();
     [requests.requests enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
        
@@ -70,20 +61,18 @@ static HYBaseRequestInternal *sharedInstance = nil;
     });
 }
 
-- (void)sendRequest:(HYBaseRequest *)request
-{
+- (void)sendRequest:(HYBaseRequest *)request{
     [self sendRequest:request withCompleteGroup:nil];
 }
 
 - (void)sendRequest:(HYBaseRequest *)request
-  withCompleteGroup:(nullable dispatch_group_t)completeGroup
-{
+  withCompleteGroup:(nullable dispatch_group_t)completeGroup{
+    
     if (completeGroup) {
         dispatch_group_enter(completeGroup);
     }
-    //请求方法
-    HYRequestMethod method = [request requestMethod];
     
+    HYRequestMethod method = [request requestMethod];
     NSAssert(method == HYRequestMethodGet ||
              method == HYRequestMethodPost
              //method == HYRequestMethodHead ||
@@ -92,51 +81,33 @@ static HYBaseRequestInternal *sharedInstance = nil;
              //method == HYRequestMethodPatch
              ,@"Please Provide Legal Request Method");
     
-    //请求url
     NSDictionary *filterParam = nil;
     NSMutableDictionary *finalParam = [NSMutableDictionary dictionary];
-    
-    NSString *url = [self p_buildFullUrlWithRequest:request param:&filterParam];
-    
-    //参数
+    NSString *url = [self p_buildURLWithRequest:request param:&filterParam];
     NSDictionary *argument = [request respondsToSelector:@selector(requestArgument)] ? [request requestArgument] : nil;
-    
-    if ([request requestMethod] == HYRequestMethodGet)
-    {
+    if ([request requestMethod] == HYRequestMethodGet){
          finalParam = [argument mutableCopy];
     }
-    else
-    {
+    else{
         [finalParam addEntriesFromDictionary:filterParam];
         [finalParam addEntriesFromDictionary:argument];
     }
     
-    //下载地址
     NSString *downloadPath = [request respondsToSelector:@selector(downloadPath)] ? [request downloadPath] : nil;
-    
-    //post body
-    HYConstructingBlock constructingBlock = [request respondsToSelector:@selector(constructingBodyBlock)] ? [request constructingBodyBlock]: nil;
-    
-    //超时时间
-    _manager.requestSerializer.timeoutInterval = [request respondsToSelector:@selector(requestTimeoutInterval)] ? [request requestTimeoutInterval] : KHYNetworkDefaultTimtout;
-    
-    //https 配置
+    HYConstructingBlock constructedBlock = [request respondsToSelector:@selector(constructingBodyBlock)] ? [request constructedBodyBlock]: nil;
+    _manager.requestSerializer.timeoutInterval = [request respondsToSelector:@selector(requestTimeoutInterval)] ? [request requestTimeout] : KHYNetworkDefaultTimtout;
+
     NSUInteger pinningMode                  = [HYNetworkConfig sharedInstance].securityPolicy.pinningMode;
     AFSecurityPolicy *securityPolicy        = [AFSecurityPolicy policyWithPinningMode:pinningMode];
     securityPolicy.allowInvalidCertificates = [HYNetworkConfig sharedInstance].securityPolicy.allowInvalidCertificates;
     securityPolicy.validatesDomainName      = [HYNetworkConfig sharedInstance].securityPolicy.validatesDomainName;
     _manager.securityPolicy = securityPolicy;
     
-    //请求header
-    NSDictionary *headerFieldValueDictionary = [request respondsToSelector:@selector(requestHeaderValueDictionary)] ? [request requestHeaderValueDictionary]: nil;
-    if (headerFieldValueDictionary != nil)
-    {
-        for (id httpHeaderField in headerFieldValueDictionary.allKeys)
-        {
+    NSDictionary *headerFieldValueDictionary = [request respondsToSelector:@selector(requestHeaderValueDictionary)] ? [request requestHeaderDictionary]: nil;
+    if (headerFieldValueDictionary != nil){
+        for (id httpHeaderField in headerFieldValueDictionary.allKeys){
             id value = headerFieldValueDictionary[httpHeaderField];
-            if ([httpHeaderField isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]])
-            {
-                
+            if ([httpHeaderField isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]]){
                 [_manager.requestSerializer setValue:(NSString *)value
                                   forHTTPHeaderField:(NSString *)httpHeaderField];
             }
@@ -145,7 +116,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     
     request.allParam = finalParam;
     
-    //缓存逻辑  !!需要重构
+    //缓存逻辑
     if (method == HYRequestMethodGet) {
         
         NSString *key = [self keyForUrl:url param:finalParam];
@@ -154,51 +125,40 @@ static HYBaseRequestInternal *sharedInstance = nil;
         //不读缓存的策略，直接请求网络
         if (request.cachePolicy == HYRequestCachePolicyNeverUseCache ||
             request.cachePolicy == HYRequestCachePolicyDonotReadCache) {
-            
-            //发送请求
             [self p_sendRequestWithUrl:url
                                  param:finalParam
                                 method:method
                                request:request
                           downloadPath:downloadPath
-                     constructingBlock:constructingBlock
+                     constructingBlock:constructedBlock
                          completeGroup:completeGroup];
         }
-        else
-        {
+        else{
             if (key && key.length != 0) {
                 HYResponseCache *cache = [HYNetworkConfig sharedInstance].cache;
                 if (cache) {
-                    
                     [cache objectForKey:key withBlock:^(HYDiskCache *cache,
                                                         NSString *key,
                                                         id object) {
-                        
                         if (object) {
                             
                             [[HYNetworkLogger sharedInstance] logResponse:object withRequest:request];
                             
-                            if (request.successHandler)
-                            {
+                            if (request.successHandler){
                                 request.successHandler(request, object);
                             }
-                            if ([request.delegate respondsToSelector:@selector(requestDidFinished:withResponse:)])
-                            {
+                            if ([request.delegate respondsToSelector:@selector(requestDidFinished:withResponse:)]){
                                 [request.delegate requestDidFinished:request withResponse:object];
                             }
-                            
                             [request clearBlock];
                             
-                            //读完缓存再请求网络
                             if (request.cachePolicy == HYRequestCachePolicyReadCacheAndRequest) {
-                                
-                                //发送请求
                                 [self p_sendRequestWithUrl:url
                                                      param:finalParam
                                                     method:method
                                                    request:request
                                               downloadPath:downloadPath
-                                         constructingBlock:constructingBlock
+                                         constructingBlock:constructedBlock
                                              completeGroup:completeGroup];
                             }
                             return;
@@ -207,14 +167,12 @@ static HYBaseRequestInternal *sharedInstance = nil;
                         {
                             //如果没有缓存，那么请求网络
                             if (request.cachePolicy == HYRequestCachePolicyReadCacheOrRequest) {
-                                
-                                //发送请求
                                 [self p_sendRequestWithUrl:url
                                                      param:finalParam
                                                     method:method
                                                    request:request
                                               downloadPath:downloadPath
-                                         constructingBlock:constructingBlock
+                                         constructingBlock:constructedBlock
                                              completeGroup:completeGroup];
                             }
                             return;
@@ -227,13 +185,12 @@ static HYBaseRequestInternal *sharedInstance = nil;
     }
     else
     {
-        //发送请求
         [self p_sendRequestWithUrl:url
                              param:finalParam
                             method:method
                            request:request
                       downloadPath:downloadPath
-                 constructingBlock:constructingBlock
+                 constructingBlock:constructedBlock
                      completeGroup:completeGroup];
     }
     
@@ -251,8 +208,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     
     NSURLSessionTask *task;
     void (^successBlock)(NSURLSessionDataTask *task, id responseObject)
-    = ^(NSURLSessionDataTask * task, id responseObject)
-    {
+    = ^(NSURLSessionDataTask * task, id responseObject){
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf p_handleSuccessWithResponse:responseObject andRequest:request];
         
@@ -262,8 +218,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     };
     
     void (^failureBlock)(NSURLSessionDataTask *task, NSError *error)
-    = ^(NSURLSessionDataTask *task, NSError *error)
-    {
+    = ^(NSURLSessionDataTask *task, NSError *error){
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf p_handleFailureWithError:error andRequest:request];
         
@@ -273,8 +228,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     };
     
     void (^progressBlock)(NSProgress *progress)
-    = ^(NSProgress *progress)
-    {
+    = ^(NSProgress *progress){
         if (progress.totalUnitCount <= 0)
         {
             return;
@@ -283,19 +237,15 @@ static HYBaseRequestInternal *sharedInstance = nil;
         [strongSelf p_handleProgress:progress.totalUnitCount andRequest:request];
     };
     
-    if (method == HYRequestMethodGet)
-    {
-        //是不是下载任务
-        if (![HYBaseRequestInternal HYNetworkIsEmptyString:downloadPath])
-        {
+    if (method == HYRequestMethodGet){
+        if (![HYBaseRequestInternal HYNetworkIsEmptyString:downloadPath]){
             task = [_manager GET:url
                       parameters:param
                         progress:progressBlock
                          success:successBlock
                          failure:failureBlock];
         }
-        else
-        {
+        else{
             task = [_manager GET:url
                       parameters:param
                         progress:nil
@@ -303,11 +253,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
                          failure:failureBlock];
         }
     }
-    else if (method == HYRequestMethodPost)
-    {
-        //有上传文件
-        if (constructingBlock)
-        {
+    else if (method == HYRequestMethodPost){
+        if (constructingBlock){
             task = [_manager POST:url
                        parameters:param
         constructingBodyWithBlock:constructingBlock
@@ -315,18 +262,15 @@ static HYBaseRequestInternal *sharedInstance = nil;
                           success:successBlock
                           failure:failureBlock];
         }
-        else
-        {
+        else{
             task = [_manager POST:url
                        parameters:param
                          progress:progressBlock
                           success:successBlock
                           failure:failureBlock];
         }
-        
     }
-    else if (method == HYRequestMethodDelete)
-    {
+    else if (method == HYRequestMethodDelete){
         task = [_manager DELETE:url
                      parameters:param
                         success:successBlock
@@ -344,47 +288,38 @@ static HYBaseRequestInternal *sharedInstance = nil;
             }
         } failure:failureBlock];
     }
-    else if (method == HYRequestMethodPut)
-    {
+    else if (method == HYRequestMethodPut){
         task = [_manager PUT:url
                   parameters:param
                      success:successBlock
                      failure:failureBlock];
     }
-    else if (method == HYRequestMethodPatch)
-    {
+    else if (method == HYRequestMethodPatch){
         task = [_manager PATCH:url
                     parameters:param
                        success:successBlock
                        failure:failureBlock];
     }
-    
-    if (task)
-    {
+    if (task){
         request.URL = [task.currentRequest.URL absoluteString];
         request.task = task;
     }
-    
     [[HYNetworkLogger sharedInstance] logRequest:request systemRequest:request.task.currentRequest];
 }
 
-- (void)cancelRequeset:(HYBaseRequest *)request
-{
+- (void)cancelRequeset:(HYBaseRequest *)request{
     [request.task cancel];
     
 }
 
-- (void)cancelAllRequest
-{
+- (void)cancelAllRequest{
     
 }
 
-- (BOOL)isLoadingRequest:(HYBaseRequest *)request
-{
+- (BOOL)isLoadingRequest:(HYBaseRequest *)request{
     NSURLSessionTask *task = request.task;
     if (task.state == NSURLSessionTaskStateRunning
-        || task.state == NSURLSessionTaskStateSuspended)
-    {
+        || task.state == NSURLSessionTaskStateSuspended){
         return YES;
     }
     return NO;
@@ -392,74 +327,46 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 #pragma mark build URL
 
-- (NSString *)p_buildFullUrlWithRequest:(HYBaseRequest *)request param:(NSDictionary **)dic
-{
-    NSString *url = nil;
-    if ([request respondsToSelector:@selector(fullUrl)] &&
-        ![HYBaseRequestInternal HYNetworkIsEmptyString:[request fullUrl]])
-    {
-        url = [request fullUrl];
-        return url;
-    }
-    else if ([[request apiUrl] hasPrefix:@"http"] ||
-             [[request apiUrl] hasPrefix:@"https"])
-    {
-        url = [request apiUrl];
-        NSLog(@"apiUrl 只需要返回API路径，不允许存在host，host应该从server对象读取");
-        return @"";
-    }
+- (NSString *)p_buildURLWithRequest:(HYBaseRequest *)request
+                                  param:(NSDictionary **)dic{
+    __block NSString *url = nil;
     
-    url = [request apiUrl];
+    //url decorator
+    NSArray *decorators = [_networkConfig urlDecorators];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    __block NSDictionary *outParam = nil;
     
-    //url filters
-    if (request.urlDecorator)
-    {
-        request.urlDecorator.inUrl = url;
-        request.urlDecorator.inRequest = request;
-        request.urlDecorator.inParameterDic = nil;
-        *dic = [request.urlDecorator outParameterDic];
-        
-        if (request.requestMethod == HYRequestMethodGet) {
+    [decorators enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       
+        id<HYNetworkParameterDecoratorProtocol>decorator = obj;
+        //相同业务线或者core
+        if ([decorator businessId] == [request businessId]
+            || [decorator businessId] == KNetworkHYBusinessCore) {
+            decorator.inUrl = url;
+            decorator.inRequest = request;
+            decorator.inParameterDic = outParam;
             
-            url = request.urlDecorator.outUrl;
-        }
-    }
-    else
-    {
-        NSArray *filters = [_networkConfig urlDecorators];
-        
-        NSMutableDictionary *param = [NSMutableDictionary dictionary];
-        NSDictionary *outParam = nil;
-        for (id<HYNetworkParameterDecoratorProtocol>filter in filters)
-        {
-            filter.inUrl = url;
-            filter.inRequest = request;
-            filter.inParameterDic = outParam;
-            
-            outParam = [filter outParameterDic];
-            [param addEntriesFromDictionary:[filter outParameterDic]];
+            outParam = [decorator outParameterDic];
+            [param addEntriesFromDictionary:[decorator outParameterDic]];
             
             if (request.requestMethod == HYRequestMethodGet) {
-                
-                url = filter.outUrl;
+                url = decorator.outUrl;
             }
         }
-        *dic = param;
-    }
+    }];
     
-    NSString *baseUrl = nil;
-    if (request.server)
-    {
-        baseUrl = [request.server baseUrl];
+    *dic = param;
+    NSString *host = nil;
+    if (request.server){
+        host = [request.server host];
     }
-    else
-    {
-        baseUrl = [_networkConfig.defaultSever baseUrl];
+    else{
+        host = [_networkConfig.defaultSever host];
     }
     
     NSParameterAssert(url);
-    NSParameterAssert(baseUrl);
-    NSString *fullUrl = [NSString stringWithFormat:@"%@%@",baseUrl, url];
+    NSParameterAssert(host);
+    NSString *fullUrl = [NSString stringWithFormat:@"%@%@",host, url];
     return fullUrl;
 }
 
@@ -467,8 +374,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 #pragma mark handle request
 
 - (void)p_handleSuccessWithResponse:(id)responseObject
-                         andRequest:(HYBaseRequest *)request
-{
+                         andRequest:(HYBaseRequest *)request{
     NSURLSessionTask *task = request.task;
     HYResponseStatus status = HYResponseStatusSuccessWithoutValidator;
     HYNetworkResponse *hyResponse = [self p_createResponseWithTask:task
@@ -477,39 +383,15 @@ static HYBaseRequestInternal *sharedInstance = nil;
                                                             status:status
                                                       responseData:responseObject
                                                              error:nil];
-    //过滤一下业务方定制的错误
-    NSError *error = nil;
-    if (request.responseFilter)
-    {
-        error = [request.responseFilter filterResponse:responseObject withRequest:request];
-    }
-    else
-    {
-        for (id<HYNetworkResponseFilterProtocol> filter in _networkConfig.responseFilters)
-        {
-            error = [filter filterResponse:responseObject withRequest:request];
-        }
-    }
     
-    if (error)
-    {
-        [hyResponse setValue:error forKey:@"error"];
-        [self p_toggleFailerRequestDelegateAndBlockWithRequest:request andResponse:hyResponse];
-        return;
-    }
-    
-    if (request.validator)
-    {
-        if ([request.validator responseDataValidator])
-        {
+    if (request.validator){
+        if ([request.validator responseDataValidator]){
             if([HYBaseRequestInternal checkResponsData:responseObject
-                           withValidator:[request.validator responseDataValidator]])
-            {
+                           withValidator:[request.validator responseDataValidator]]){
                 status = HYResponseStatusSuccess;
                 [hyResponse setValue:@(status) forKey:@"status"];
             }
-            else
-            {
+            else{
                 status = HYResponseStatusValidatorFailed;
                 [hyResponse setValue:@(status) forKey:@"status"];
                 [hyResponse setValue:[NSError errorWithDomain:KNetworkHYErrorDomain
@@ -528,8 +410,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 }
 
 - (void)p_handleFailureWithError:(NSError *)error
-                    andRequest:(HYBaseRequest *)request
-{
+                    andRequest:(HYBaseRequest *)request{
     NSURLSessionTask *task = request.task;
     HYResponseStatus status = HYResponseStatusFailed;
     HYNetworkResponse *hyResponse = [self p_createResponseWithTask:task
@@ -544,10 +425,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
 }
 
 - (void)p_handleProgress:(int64_t)progress
-              andRequest:(HYBaseRequest *)request
-{
-    if ([request.delegate respondsToSelector:@selector(request:loadingProgress:)])
-    {
+              andRequest:(HYBaseRequest *)request{
+    if ([request.delegate respondsToSelector:@selector(request:loadingProgress:)]){
         [request.delegate request:request loadingProgress:0];
     }
 }
@@ -559,8 +438,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
                                   systemReqeust:(NSURLRequest *)systemRequest
                                          status:(HYResponseStatus)status
                                    responseData:(id)data
-                                          error:(NSError *)error;
-{
+                                          error:(NSError *)error;{
     NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse *)task.response;
     HYNetworkResponse *response = [[HYNetworkResponse alloc] initWithResponse:urlResponse
                                                                     hyRequest:request
@@ -573,19 +451,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
 #pragma mark toggle request delegate & block
 
 - (void)p_toggleSuccessRequestDelegateAndBlockWithRequest:(HYBaseRequest *)request
-                                        andResponse:(HYNetworkResponse *)responseObject
-{
-    
-    for (id<HYNetworkResponseFilterProtocol>filter in _networkConfig.responseFilters)
-    {
-        NSError *error = [filter filterResponse:responseObject withRequest:request];
-        if (error)
-        {
-            [responseObject setValue:error forKey:@"error"];
-            [self p_toggleFailerRequestDelegateAndBlockWithRequest:request andResponse:responseObject];
-            return;
-        }
-    }
+                                        andResponse:(HYNetworkResponse *)responseObject{
     
     [[HYNetworkLogger sharedInstance] logResponse:responseObject withRequest:request];
     
@@ -608,12 +474,10 @@ static HYBaseRequestInternal *sharedInstance = nil;
         }
     }
     
-    if (request.successHandler)
-    {
+    if (request.successHandler){
         request.successHandler(request, responseObject);
     }
-    if ([request.delegate respondsToSelector:@selector(requestDidFinished:withResponse:)])
-    {
+    if ([request.delegate respondsToSelector:@selector(requestDidFinished:withResponse:)]){
         [request.delegate requestDidFinished:request withResponse:responseObject];
     }
     [request clearBlock];
@@ -624,12 +488,10 @@ static HYBaseRequestInternal *sharedInstance = nil;
 {
     [[HYNetworkLogger sharedInstance] logResponse:responseObject withRequest:request];
     
-    if (request.failerHandler)
-    {
+    if (request.failerHandler){
         request.failerHandler(request, responseObject);
     }
-    if ([request.delegate respondsToSelector:@selector(request:withErrorResponse:)])
-    {
+    if ([request.delegate respondsToSelector:@selector(request:withErrorResponse:)]){
         [request.delegate request:request withErrorResponse:responseObject];
     }
     [request clearBlock];
@@ -639,16 +501,13 @@ static HYBaseRequestInternal *sharedInstance = nil;
 
 + (BOOL)HYNetworkIsEmptyString:(NSString *)string
 {
-    if (![string isKindOfClass:[NSString class]])
-    {
+    if (![string isKindOfClass:[NSString class]]){
         return YES;
     }
-    if (string == nil)
-    {
+    if (string == nil){
         return YES;
     }
-    if ([string length] == 0)
-    {
+    if ([string length] == 0){
         return YES;
     }
     return NO;

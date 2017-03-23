@@ -97,7 +97,7 @@ static NSString *const HYResponseHYRequestKey         = @"HYResponseHYRequestKey
         _status = status;
         _fromCache = NO;
         
-        _requestIdentifier = [[hyRequest name] copy];
+        _requestIdentifier = [[hyRequest identifier] copy];
         _requestURL = [[hyRequest URL] copy];
         _content = content;
         

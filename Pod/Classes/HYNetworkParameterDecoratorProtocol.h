@@ -10,11 +10,11 @@
 @class HYNetworkResponse;
 @class HYBaseRequest;
 
-/** 参数filter **/
-
 @protocol HYNetworkParameterDecoratorProtocol <NSObject>
 
 @required
+
+- (NSString *)businessId;
 
 // in
 @property (nonatomic, copy)NSString *inUrl;
@@ -24,8 +24,6 @@
 // out
 @property (nonatomic, copy, readonly)NSString *outUrl;
 @property (nonatomic, strong, readonly)NSDictionary *outParameterDic;
-
-//- (NSString *)decorate;
 
 @end
 

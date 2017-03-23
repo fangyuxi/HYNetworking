@@ -10,7 +10,7 @@
 
 @implementation HYNetworkDefaultServer
 
-- (NSString *)baseUrl
+- (NSString *)host
 {
     if (self.isOnline)
     {

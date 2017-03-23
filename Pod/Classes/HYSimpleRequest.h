@@ -16,23 +16,18 @@
 
 @class HYSimpleRequest;
 
-@interface HYSimpleRequest : HYBaseRequest<HYBaseRequestProtocol>
-{
-    
-}
+@interface HYSimpleRequest : HYBaseRequest
 
 /**
  *  以下属性对应的是HYBaseRequestProtocol中的方法
  */
-
 @property (nonatomic, assign) HYRequestMethod simpleRequestMethod;
-@property (nonatomic, copy) NSString *simpleApiUrl;
-@property (nonatomic, copy) NSString *simpleName;
-@property (nonatomic, copy) NSString *simpleFullUrl;
-@property (nonatomic, strong) NSDictionary *simpleArgument;
-@property (nonatomic, strong) NSDictionary *simpleHeaderValueDictionary;
-@property (nonatomic, assign) NSTimeInterval simpleTimeoutInterval;
-@property (nonatomic, copy) NSString *simpleDownloadPath;
-
+@property (nonatomic, copy, nonnull) NSString *api;
+@property (nonatomic, copy, nonnull) NSString *identifier;
+@property (nonatomic, strong, nullable) NSDictionary *arguments;
+@property (nonatomic, strong, nullable) NSDictionary *header;
+@property (nonatomic, assign) NSTimeInterval timeout;
+@property (nonatomic, copy, nullable) NSString *downloadPath;
+@property (nonatomic, copy, nullable) HYConstructingBlock bodyBlock;
 
 @end
