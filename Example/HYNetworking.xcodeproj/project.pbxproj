@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E2603611CFC187E00A1009E /* HYNetworkSomethingParamFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2603601CFC187E00A1009E /* HYNetworkSomethingParamFilter.m */; };
+		1E4DD0111E83FACA001C02AD /* swift.swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 1E4DD0101E83FACA001C02AD /* swift.swift-version */; };
 		1EC3D75A1CD8368E0029930A /* HYTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC3D7591CD8368E0029930A /* HYTools.m */; };
 		1EEB9B9D1CA3EE7F008A8411 /* HYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB9B971CA3EE7F008A8411 /* HYViewController.m */; };
 		1EEB9B9E1CA3EE7F008A8411 /* HYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB9B9A1CA3EE7F008A8411 /* HYAppDelegate.m */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		1E26035F1CFC187E00A1009E /* HYNetworkSomethingParamFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYNetworkSomethingParamFilter.h; sourceTree = "<group>"; };
 		1E2603601CFC187E00A1009E /* HYNetworkSomethingParamFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYNetworkSomethingParamFilter.m; sourceTree = "<group>"; };
+		1E4DD0101E83FACA001C02AD /* swift.swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "swift.swift-version"; path = "../swift.swift-version"; sourceTree = "<group>"; };
 		1EC3D7581CD8368E0029930A /* HYTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTools.h; sourceTree = "<group>"; };
 		1EC3D7591CD8368E0029930A /* HYTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTools.m; sourceTree = "<group>"; };
 		1EEB9B961CA3EE7F008A8411 /* HYViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYViewController.h; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
+				1E4DD0101E83FACA001C02AD /* swift.swift-version */,
 				D4186D8037D93F8BC12509BB /* HYNetworking.podspec */,
 				659EAE04432D1DC142003B36 /* README.md */,
 				DFD2C14C5E3A8710FD911CF6 /* LICENSE */,
@@ -329,6 +332,7 @@
 			files = (
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				1E4DD0111E83FACA001C02AD /* swift.swift-version in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
