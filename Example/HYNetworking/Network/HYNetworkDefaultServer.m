@@ -16,7 +16,7 @@
 {
     if (self.isOnline)
     {
-        return @"https://app.58.com";
+        return @"http://shellhue.github.io/2017/02/07/fakedata/";
     }
     else
     {

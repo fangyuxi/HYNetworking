@@ -17,7 +17,7 @@
 
 - (NSString *)api
 {
-    return @"/api/list/jianzhi?&geotype=baidu&ct=filter&curVer=7.6.0&appId=1&filterParams=&isNeedAd=0&action=getListInfo%2CgetFilterInfo&location=1%2C1142%2C7551&format=json&os=ios&tabkey=allcity&localname=bj&page=1&v=1&isBigPage=1";
+    return @"";
     
 }
 
