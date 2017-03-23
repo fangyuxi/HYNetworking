@@ -8,6 +8,6 @@
 
 #import "HYNetworkServer.h"
 
-@interface HYNetworkDefaultServer : HYNetworkServer<HYNetworkServerProtocol>
+@interface HYNetworkDefaultServer : NSObject<HYNetworkServerProtocol>
 
 @end

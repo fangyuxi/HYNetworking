@@ -164,9 +164,9 @@ typedef void (^HYRequestProgressHandler)(HYBaseRequest *request, int64_t progres
  */
 @property (nonatomic, weak) id<HYRequestValidator> validator;
 /**
- *  服务提供者，如果不提供，那么使用config的默认提供者
+ *  服务器接口描述，如果不提供，那么使用config的服务器
  */
-@property (nonatomic, strong) HYNetworkServer *server;
+@property (nonatomic, strong) id<HYNetworkServerProtocol> server;
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 

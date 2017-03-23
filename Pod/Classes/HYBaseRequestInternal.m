@@ -94,8 +94,8 @@ static HYBaseRequestInternal *sharedInstance = nil;
     }
     
     NSString *downloadPath = [request respondsToSelector:@selector(downloadPath)] ? [request downloadPath] : nil;
-    HYConstructingBlock constructedBlock = [request respondsToSelector:@selector(constructingBodyBlock)] ? [request constructedBodyBlock]: nil;
-    _manager.requestSerializer.timeoutInterval = [request respondsToSelector:@selector(requestTimeoutInterval)] ? [request requestTimeout] : KHYNetworkDefaultTimtout;
+    HYConstructingBlock constructedBlock = [request respondsToSelector:@selector(constructedBodyBlock)] ? [request constructedBodyBlock]: nil;
+    _manager.requestSerializer.timeoutInterval = [request respondsToSelector:@selector(requestTimeout)] ? [request requestTimeout] : KHYNetworkDefaultTimtout;
 
     NSUInteger pinningMode                  = [HYNetworkConfig sharedInstance].securityPolicy.pinningMode;
     AFSecurityPolicy *securityPolicy        = [AFSecurityPolicy policyWithPinningMode:pinningMode];
@@ -103,7 +103,7 @@ static HYBaseRequestInternal *sharedInstance = nil;
     securityPolicy.validatesDomainName      = [HYNetworkConfig sharedInstance].securityPolicy.validatesDomainName;
     _manager.securityPolicy = securityPolicy;
     
-    NSDictionary *headerFieldValueDictionary = [request respondsToSelector:@selector(requestHeaderValueDictionary)] ? [request requestHeaderDictionary]: nil;
+    NSDictionary *headerFieldValueDictionary = [request respondsToSelector:@selector(requestHeaderDictionary)] ? [request requestHeaderDictionary]: nil;
     if (headerFieldValueDictionary != nil){
         for (id httpHeaderField in headerFieldValueDictionary.allKeys){
             id value = headerFieldValueDictionary[httpHeaderField];
@@ -330,6 +330,11 @@ static HYBaseRequestInternal *sharedInstance = nil;
 - (NSString *)p_buildURLWithRequest:(HYBaseRequest *)request
                                   param:(NSDictionary **)dic{
     __block NSString *url = nil;
+    if ([[request api] hasPrefix:@"http"]
+        || [[request api] hasPrefix:@"https"]){
+        return [request api];
+    }
+    url = [request api];
     
     //url decorator
     NSArray *decorators = [_networkConfig urlDecorators];

@@ -34,10 +34,3 @@
 @property (nonatomic, assign, getter=isVerify)BOOL verify;
 
 @end
-
-@interface HYNetworkServer : NSObject<HYNetworkServerProtocol>
-{
-    
-}
-
-@end

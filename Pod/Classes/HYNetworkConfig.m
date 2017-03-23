@@ -47,7 +47,7 @@
 
 #pragma mark filters
 
-- (void)addUrlDecorators:(id<HYNetworkParameterDecoratorProtocol>)decorator
+- (void)addUrlDecorator:(id<HYNetworkParameterDecoratorProtocol>)decorator
 {
     if (!decorator){
         return;

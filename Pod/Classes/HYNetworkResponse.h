@@ -57,6 +57,4 @@ typedef NS_ENUM(NSInteger , HYResponseStatus)
                                        status:(HYResponseStatus)status
                                         error:(NSError *)error NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
-
 @end

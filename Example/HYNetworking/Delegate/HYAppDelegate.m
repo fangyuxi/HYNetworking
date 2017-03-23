@@ -35,9 +35,10 @@
 {
     HYNetworkConfig *config = [HYNetworkConfig sharedInstance];
     config.defaultSever = [[HYNetworkDefaultServer alloc] init];
-    config.logHeader = NO;
+    config.logHeader = YES;
+    config.logRequest = YES;
+    config.logResponse = YES;
     config.defaultSever.online = YES;
-    config.defaultSever.verify = NO;
     config.securityPolicy = [HYNetworkSecurityPolicy defaultSecurityPolicy];
     config.cache = [[HYResponseCache alloc] initWithName:@"fangyuxi"];
     
@@ -46,14 +47,9 @@
     [HYNetworkConfig sharedInstance].securityPolicy.validatesDomainName = NO;
     
     //[config addUrlFilter:[[HYNetworkGlobalParamFilter alloc] init]];
-//    [config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
-//    [config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];
+    //[config addUrlFilter:[[HYNetworkSomethingParamFilter alloc] init]];
+    //[config addUrlFilter:[[HYNetworkSignatureUrlFilter alloc] init]];
     
-}
-
-- (void)setString:(NSString *)string
-{
-    _string = string;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

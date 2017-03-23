@@ -11,12 +11,11 @@
 #import "HYDelegateRequest.h"
 #import "HYAppDelegate.h"
 #import <objc/runtime.h>
+
 @interface HYViewController ()<HYRequestDelegate,HYBatchRequestsDelegate>
 {
-    NSString *_name;
+    HYDelegateRequest *_request;
 }
-
-@property (nonatomic, strong) dispatch_group_t dispatchGroup;
 
 @end
 
@@ -27,6 +26,10 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    _request = [[HYDelegateRequest alloc] init];
+    _request.delegate = self;
+    [_request start];
 }
 
 - (void)didReceiveMemoryWarning

@@ -22,7 +22,7 @@
 /**
  default server
  */
-@property (nonatomic, strong) HYNetworkServer *defaultSever;
+@property (nonatomic, strong) id<HYNetworkServerProtocol> defaultSever;
 
 
 /**
@@ -37,7 +37,7 @@
  */
 @property (nonatomic, strong) HYResponseCache *cache;
 
-- (void)addUrlDecorators:(id<HYNetworkParameterDecoratorProtocol>)decorator;
+- (void)addUrlDecorator:(id<HYNetworkParameterDecoratorProtocol>)decorator;
 
 /**
  log switch
