@@ -1,4 +1,4 @@
-# HYNetworking
+# HYNetworking（代码丑，准备重写）
 
 [![CI Status](http://img.shields.io/travis/fangyuxi/HYNetworking.svg?style=flat)](https://travis-ci.org/fangyuxi/HYNetworking)
 [![Version](https://img.shields.io/cocoapods/v/HYNetworking.svg?style=flat)](http://cocoapods.org/pods/HYNetworking)
